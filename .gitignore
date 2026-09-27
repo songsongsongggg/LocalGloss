@@ -1,0 +1,11 @@
+/target/
+/dist/
+/.tools/
+*.app
+.env*
+.DS_Store
+__pycache__/
+*.pyc
+/assets/lexicon/dict.tsv
+/assets/glossary/glossary-en.tsv
+settings.json

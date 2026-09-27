@@ -1,0 +1,19 @@
+[package]
+name = "localgloss-macos"
+description = "LocalGloss 纯离线 macOS 输入法外壳"
+version = "0.2.0-dev"
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+localgloss-engine = { path = "../../crates/localgloss-engine" }
+objc2.workspace = true
+objc2-app-kit.workspace = true
+objc2-foundation.workspace = true
+objc2-input-method-kit.workspace = true
+
+[dev-dependencies]
+plist.workspace = true
+
+[lints]
+workspace = true

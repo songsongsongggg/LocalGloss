@@ -1,0 +1,46 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/qingjian-core",
+    "crates/qingjian-dictionary",
+    "crates/qingjian-translate",
+    "crates/qingjian-format",
+    "crates/localgloss-engine",
+    "apps/localgloss-macos",
+]
+default-members = ["crates/localgloss-engine", "apps/localgloss-macos"]
+
+[workspace.package]
+version = "0.1.1"
+edition = "2024"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/songsongsongggg/LocalGloss"
+
+[workspace.lints.clippy]
+all = "warn"
+
+[workspace.dependencies]
+qingjian-core = { path = "crates/qingjian-core" }
+qingjian-dictionary = { path = "crates/qingjian-dictionary" }
+qingjian-translate = { path = "crates/qingjian-translate" }
+qingjian-format = { path = "crates/qingjian-format" }
+serde = { version = "1.0.229", features = ["derive"] }
+thiserror = "2.0.20"
+tracing = { version = "0.1.44", features = ["max_level_off", "release_max_level_off"] }
+jiff = "0.2.35"
+foldhash = "0.2.0"
+ferrous-opencc = { version = "0.4.0", default-features = false, features = ["s2t-conversion"] }
+memmap2 = "0.9"
+zerocopy = { version = "0.8", features = ["derive"] }
+toml = "1.1.5"
+serde_json = "1.0.151"
+plist = "1.7"
+objc2 = "0.6.4"
+objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSEnumerator", "NSArray", "NSAttributedString", "NSBundle", "NSDictionary", "NSGeometry", "NSObject", "NSRange", "NSString", "NSTimer"] }
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSApplication", "NSAttributedString", "NSEvent", "NSBezierPath", "NSColor", "NSFont", "NSPanel", "NSScreen", "NSView", "NSWindow", "NSResponder", "NSGraphics", "NSAppearance", "NSMenu", "NSMenuItem", "NSStringDrawing", "objc2-core-foundation"] }
+objc2-input-method-kit = { version = "0.3.2", default-features = false, features = ["std", "IMKInputController", "IMKServer", "objc2-app-kit"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = false

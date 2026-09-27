@@ -1,0 +1,17 @@
+[package]
+name = "localgloss-engine"
+description = "无网络和输入记录服务的离线拼音译词接口"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+qingjian-core.workspace = true
+qingjian-dictionary.workspace = true
+qingjian-translate.workspace = true
+thiserror.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true
