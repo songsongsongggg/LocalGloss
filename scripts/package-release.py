@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import os
 import pathlib
 import plistlib
 import shutil
@@ -23,6 +24,8 @@ def main():
     parser.add_argument('destination', type=pathlib.Path)
     args = parser.parse_args()
     app, output = args.app.resolve(), args.destination.resolve()
+    if pathlib.Path('/Library/Developer/CommandLineTools').is_dir():
+        os.environ.setdefault('DEVELOPER_DIR', '/Library/Developer/CommandLineTools')
     if output.exists():
         raise SystemExit('Destination exists; refusing to overwrite')
     if run('git', 'status', '--porcelain').strip():
