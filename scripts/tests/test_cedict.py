@@ -5,10 +5,29 @@ import sys
 import tempfile
 import unittest
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
-from cedict import convert
+from cedict import convert, parse_frequencies
 
 
 class ConversionTests(unittest.TestCase):
+    def test_static_frequency_beats_unicode_order_and_unknown_fallback(self):
+        source = '亟需 亟需 [ji2 xu1] /urgently need/\n繼續 继续 [ji4 xu4] /continue/\n幾希 几希 [ji1 xi1] /very little/\n'
+        dictionary, _, counts = convert(source, parse_frequencies('继续 14690 v\n亟需 52 v\n'))
+        self.assertIn('继续\tji xu\t14690\n', dictionary)
+        self.assertIn('亟需\tji xu\t52\n', dictionary)
+        self.assertIn('几希\tji xi\t1\n', dictionary)
+        self.assertEqual(counts['frequency_matched_entries'], 2)
+
+    def test_rare_reading_does_not_inherit_full_word_frequency(self):
+        dictionary, _, _ = convert('見 见 [jian4] /see/\n見 见 [xian4] /appear/\n', {'见': 10000})
+        self.assertIn('见\tjian\t10000\n', dictionary)
+        self.assertIn('见\txian\t100\n', dictionary)
+
+    def test_frequency_validation_and_duplicate_policy(self):
+        self.assertEqual(parse_frequencies('词 5 n\n词 3 n\n字 0 n\n'), {'词': 5, '字': 1})
+        for invalid in ['词 -1 n', '词 4294967296 n', '词 x n', '词 5', '词 ５ n']:
+            with self.assertRaises(ValueError):
+                parse_frequencies(invalid)
+
     def test_polyphonic_dedup_and_reference_separator(self):
         source = '重 重 [zhong4] /heavy/CL:個|个[ge4]/\n重 重 [chong2] /again/heavy/\n'
         dictionary, glossary, counts = convert(source)

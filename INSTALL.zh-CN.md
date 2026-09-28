@@ -1,12 +1,12 @@
-# LocalGloss v0.2.0-beta.1 安装与回退
+# LocalGloss v0.2.0 安装与回退
 
-这是测试版，仅提供 Apple Silicon（M1 及后续）macOS 13+ 构建。已在当前开发机完成构建和自动测试；并未逐一验证所有 macOS 版本、所有应用和物理键盘路径。Intel Mac 暂无安装包。
+这是稳定版，仅提供 Apple Silicon（M1 及后续）macOS 13+ 构建。已完成自动检查，用户确认排序修复版在本机常见输入体验良好；尚未逐一验证所有 macOS 版本与应用。Intel Mac 暂无安装包。
 
 ## 下载和校验
 
-从 https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.2.0-beta.1 下载 `LocalGloss-v0.2.0-beta.1-macOS-arm64.zip` 和 `SHA256SUMS`。
+从 https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.2.0 下载 `LocalGloss-v0.2.0-macOS-arm64.zip` 和 `SHA256SUMS`。
 
-在终端进入下载目录，运行 `shasum -a 256 LocalGloss-v0.2.0-beta.1-macOS-arm64.zip`，比较结果与 SHA256SUMS 中对应行。校验值用于检查文件是否一致；它不替代开发者身份签名。
+在终端进入下载目录，运行 `shasum -a 256 LocalGloss-v0.2.0-macOS-arm64.zip`，比较结果与 SHA256SUMS 中对应行。校验值用于检查文件是否一致；它不替代开发者身份签名。
 
 下载包已内置开放词库，使用时不需要联网、模型账户或 API Key。解压后可看到 LocalGloss.app。
 

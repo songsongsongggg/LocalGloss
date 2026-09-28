@@ -2,13 +2,13 @@
 
 LocalGloss 是面向 macOS 的离线拼音输入法。输入中文拼音时，候选旁显示英文译词；按 Tab 可直接输入译词，无需复制粘贴。
 
-**当前为 v0.2.0-beta.1 测试版。** [下载应用与源码](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.2.0-beta.1) · [安装与回退](INSTALL.zh-CN.md) · [验证记录](docs/validation-0.2.0-beta.1.md)
+**当前稳定版为 v0.2.0。** [下载应用与源码](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.2.0) · [安装与回退](INSTALL.zh-CN.md) · [验证记录](docs/validation-0.2.0.md)
 
-仅提供 Apple Silicon、macOS 13+ 构建。ZIP 内已包含开放词库，解压后按安装说明添加输入源。应用尚未做 Developer ID 签名与公证，完整真机兼容及隐私验收仍待完成，发布状态为 Pre-release。
+仅提供 Apple Silicon、macOS 13+ 构建。ZIP 内已包含开放词库，解压后按安装说明添加输入源。本机用户已确认常见输入和候选排序可用；尚未覆盖所有应用与系统版本。应用仍采用 ad-hoc 签名，未做 Developer ID 签名与公证。
 
 ## 功能
 
-- 全拼中文候选与本地英文释义；缺少译词时不请求云服务。
+- 全拼、简拼中文候选与本地英文释义；常用词按随包静态词频排序，缺少译词时不请求云服务。
 - Tab / Shift＋Tab 输入第一、第二条译词，Space 输入中文。
 - F1 展开完整释义，Page Up / Page Down 翻阅；Esc 返回候选。
 - Ctrl＋Shift＋Space 切换英文直通；支持网址、邮箱的原样输入路径。
@@ -46,6 +46,6 @@ python3 scripts/verify-privacy.py
 
 本项目派生自 [青简](https://github.com/qingjian-team/qingjian) 的离线核心，沿用 **GPL-3.0-or-later**。macOS 外壳、离线装配及设置应用为 LocalGloss 的独立修改，详见 [NOTICE](NOTICE.md)。
 
-发布数据采用 CC-CEDICT，原始快照和派生 TSV 按 CC BY-SA 4.0 分发；代码与数据许可分开保留。不会上传个人设置、主动词条或本机开发记录。
+发布数据采用 CC-CEDICT，原始快照和派生 TSV 按 CC BY-SA 4.0 分发；静态词频来自 MIT 许可的 jieba，保留独立声明；代码与数据许可分开保留。不会上传个人设置、主动词条或本机开发记录。
 
 欢迎按 [贡献指南](CONTRIBUTING.md) 提交问题和 PR；安全反馈见 [SECURITY.md](SECURITY.md)。

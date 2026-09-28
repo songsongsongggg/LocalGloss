@@ -10,9 +10,10 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FILES = [
     "Cargo.toml", "Cargo.lock", "LICENSE", "README.md", "NOTICE.md", "PRIVACY.md", "DATA-SOURCES.md",
-    "docs/user/guide.md", "docs/development.md", "docs/releasing.md", "docs/validation-0.2.0-beta.1.md",
+    "docs/user/guide.md", "docs/development.md", "docs/releasing.md", "docs/validation-0.2.0-beta.1.md", "docs/validation-0.2.0.md",
     "CONTRIBUTING.md", "SECURITY.md", "RELEASE-NOTES.md", "INSTALL.zh-CN.md",
     ".github/workflows/localgloss-ci.yml", ".github/ISSUE_TEMPLATE/localgloss-bug.yml", ".github/pull_request_template.md",
+    "assets/jieba/README.md", "assets/jieba/LICENSE.txt", "assets/jieba/dict.txt.gz",
     "assets/cedict/README.md", "assets/cedict/LICENSE.txt", "assets/cedict/cedict-ts.txt.gz",
     "assets/licenses/README.md", "assets/licenses/objc2-LICENSE.md", "assets/licenses/objc2-core-LICENSE.md", "assets/licenses/objc2-encode-LICENSE.md", "assets/licenses/OpenCC-LICENSE.txt", "assets/licenses/Apache-2.0.txt", "assets/licenses/MIT.txt",
     "scripts/tests/test_cedict.py",
@@ -38,9 +39,11 @@ def main():
         name = path.relative_to(ROOT)
         if path.is_symlink() or (any(part.startswith(".") for part in name.parts) and str(name) not in FILES):
             raise SystemExit(f"Unexpected private or symlink path: {name}")
-        if str(name) == "assets/cedict/cedict-ts.txt.gz":
-            if hashlib.sha256(path.read_bytes()).hexdigest() != "05bb7cf923fd24cd636a703da2b0172d3b8686c3de28f613ac924e57ea44a95a":
-                raise SystemExit("CC-CEDICT checksum mismatch")
+        archives = {"assets/cedict/cedict-ts.txt.gz": "05bb7cf923fd24cd636a703da2b0172d3b8686c3de28f613ac924e57ea44a95a",
+                    "assets/jieba/dict.txt.gz": "35e47c1fb9baf2a351a179afb8c22878caa0305e7294c855f05af524f46d51a3"}
+        if str(name) in archives:
+            if hashlib.sha256(path.read_bytes()).hexdigest() != archives[str(name)]:
+                raise SystemExit(f"Archive checksum mismatch: {name}")
             continue
         if path.suffix not in {".rs", ".toml", ".lock", ".md", ".swift", ".sh", ".py", ".plist", ".strings", ".txt", ".yml"} and path.name != "LICENSE":
             raise SystemExit(f"Unexpected file type: {name}")

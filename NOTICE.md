@@ -14,3 +14,5 @@ LocalGloss 是独立派生项目，不代表青简官方版本；未使用青简
 Rust 第三方依赖版本列于 `Cargo.lock`，各依赖按自身许可提供。数据来源及其许可说明见 `DATA-SOURCES.md`；不得将根目录的代码许可证理解为所有数据来源的统一许可。
 
 2026-09-28 的公开测试版新增 CC-CEDICT 数据转换、依赖许可归档、CI 与版本发布脚本。数据快照与派生 TSV 采用 CC BY-SA 4.0，保留 MDBG、CC-CEDICT 社区与原 CEDICT 作者署名；详见 DATA-SOURCES.md。
+
+0.2.0 新增 jieba 静态词频（Copyright (c) 2013 Sun Junyi，MIT）；原文许可见 assets/jieba/LICENSE.txt。仅使用数据，不引入 jieba 运行库；生成的 CC-CEDICT 派生表保留两项来源声明。

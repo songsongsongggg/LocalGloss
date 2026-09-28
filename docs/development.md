@@ -32,10 +32,10 @@ Swift 测试使用独立临时目录与虚构词条，覆盖保存、0600 权限
 5. 断网输入；已有词表正常可用。观察进程流量与文件写入，区分目标应用行为。
 6. 比较输入前后的剪贴板变化计数，不读取剪贴板内容；有变化时排除其他应用干扰。
 
-核心测试、静态检查和签名校验通过不代表这些实际会话检查通过。0.2.0-beta.1 在完成上述检查前保持 Pre-release 状态。
+核心测试、静态检查和签名校验通过不代表这些实际会话检查通过。v0.2.0 经本机用户日常输入验收并明确授权发布稳定版；尚未完成的项目保留在版本验证记录中。
 
 ## 本次变化
 
 0.2.0 新增原生设置、主动词条置顶、Ctrl＋Shift＋Space 英文直通、可选中文标点和 F1 释义分页；保持无云服务、无自动学习、无输入日志。0.1.1 已有 Tab 译词、符号翻页与稳定候选宽度。
 
-发布版使用 CC-CEDICT；执行 `python3 scripts/prepare-release-data.py` 和 `python3 -m unittest discover -s scripts/tests -v` 检查转换，再运行 `bash scripts/dev.sh cargo run --offline --locked -p localgloss-engine --example offline_check -- assets/cedict/generated` 验证实际词表。测试与发布记录见 [0.2.0-beta.1 验证](validation-0.2.0-beta.1.md)。
+发布版使用 CC-CEDICT 与 jieba 静态词频；执行 `python3 scripts/prepare-release-data.py` 和 `python3 -m unittest discover -s scripts/tests -v` 检查转换，再运行 `bash scripts/dev.sh cargo run --offline --locked -p localgloss-engine --example offline_check -- assets/cedict/generated` 验证实际词表。测试与发布记录见 [0.2.0 验证](validation-0.2.0.md)。

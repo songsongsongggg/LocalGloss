@@ -16,6 +16,6 @@ xcrun swiftc -O -file-prefix-map "$LOCALGLOSS_ROOT=." -debug-prefix-map "$LOCALG
 python3 - "$LOCALGLOSS_SETTINGS_APP" <<'PY'
 import plistlib,pathlib,sys
 p=pathlib.Path(sys.argv[1])/'Contents/Info.plist'
-p.write_bytes(plistlib.dumps({'CFBundleIdentifier':'local.localgloss.settings','CFBundleName':'LocalGloss Settings','CFBundleDisplayName':'LocalGloss 设置','CFBundleExecutable':'localgloss-settings','CFBundlePackageType':'APPL','CFBundleVersion':'4','LocalGlossRelease':'0.2.0-beta.1','CFBundleShortVersionString':'0.2.0','LSMinimumSystemVersion':'13.0','NSPrincipalClass':'NSApplication'}))
+p.write_bytes(plistlib.dumps({'CFBundleIdentifier':'local.localgloss.settings','CFBundleName':'LocalGloss Settings','CFBundleDisplayName':'LocalGloss 设置','CFBundleExecutable':'localgloss-settings','CFBundlePackageType':'APPL','CFBundleVersion':'6','LocalGlossRelease':'0.2.0','CFBundleShortVersionString':'0.2.0','LSMinimumSystemVersion':'13.0','NSPrincipalClass':'NSApplication'}))
 PY
 codesign --sign - "$LOCALGLOSS_SETTINGS_APP"

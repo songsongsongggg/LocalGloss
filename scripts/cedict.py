@@ -4,12 +4,29 @@ import re
 
 ENTRY = re.compile(r"^(\S+) (\S+) \[([^\]]+)\] /(.*)/$")
 HAN = re.compile(r"^[\u3400-\u4dbf\u4e00-\u9fff\U00020000-\U0002ffff]+$")
-# 手工指定常用项优先级，不代表语料词频，不来自用户输入。
-COMMON = "的 是 我 你 他 她 它 们 在 有 不 了 和 人 一 个 好 中 国 时 十 事 为 这 那 来 去 吗 呢 上 下 大 小 多 少 开发 咖啡 你好 谢谢 再见 今天 明天 工作 学习 输入 翻译 隐私 安全 电脑 软件 设置 测试 语言 中国 中文 英文 我们 可以 使用 本地".split()
-PRIORITY = {word: 1_000_000 - index * 1000 for index, word in enumerate(COMMON)}
+# jieba 只有词形词频。以下生僻、姓氏或限于复词的读音不应继承常用读音的全部权重。
+# 这是公开、固定的排序修正（1/100），不是按读音统计的真实词频。
+RARE_READINGS = {('见', 'xian'), ('听', 'yin'), ('区', 'ou'), ('行', 'heng'),
+                 ('什', 'shi'), ('的', 'di'), ('说', 'shui')}
+
+def parse_frequencies(text):
+    """读取固定 jieba 词频；不推断未收录词、不借用个人输入。"""
+    frequencies = {}
+    for number, raw in enumerate(text.splitlines(), 1):
+        fields = raw.split()
+        if len(fields) != 3 or not fields[1].isascii() or not fields[1].isdigit():
+            raise ValueError(f'Malformed frequency entry at line {number}')
+        word, count, _ = fields
+        count = int(count)
+        if count > 0xffffffff:
+            raise ValueError(f'Frequency out of range at line {number}')
+        # 同词多次出现时取最大值；零频词保留最低权重。
+        frequencies[word] = max(frequencies.get(word, 1), count)
+    return frequencies
 
 
-def convert(text):
+def convert(text, frequencies=None):
+    frequencies = frequencies or {}
     words, senses, skipped = {}, {}, 0
     for number, raw in enumerate(text.splitlines(), 1):
         if not raw or raw.startswith('#'):
@@ -35,12 +52,16 @@ def convert(text):
             skipped += 1
             continue
         key = (word, ' '.join(syllables))
-        words[key] = PRIORITY.get(word, 1000)
+        weight = frequencies.get(word, 1)
+        if key in RARE_READINGS:
+            weight = max(1, weight // 100)
+        words[key] = weight
         for sense in glosses:
             if sense not in senses.setdefault(word, []):
                 senses[word].append(sense)
-    header = '# Adapted from CC-CEDICT / MDBG contributors; CC BY-SA 4.0. See ../LICENSE.txt.\n'
+    header = '# Adapted from CC-CEDICT / MDBG contributors; CC BY-SA 4.0. Static weights from jieba / Sun Junyi; MIT. See bundled notices.\n'
     dictionary = header + ''.join(f'{word}\t{pinyin}\t{weight}\n' for (word, pinyin), weight in sorted(words.items()))
     # 引擎上限两条；第一条单列，其余合并为第二条，使详情仍保留全部释义。
     glossary = header + ''.join(word + '\t' + '\t'.join(glosses[:1] + (['; '.join(glosses[1:])] if len(glosses) > 1 else [])) + '\n' for word, glosses in sorted(senses.items()))
-    return dictionary, glossary, {'dictionary_entries': len(words), 'glossary_words': len(senses), 'skipped_entries': skipped}
+    return dictionary, glossary, {'dictionary_entries': len(words), 'glossary_words': len(senses), 'skipped_entries': skipped,
+                                 'frequency_matched_entries': sum(word in frequencies for word, _ in words)}

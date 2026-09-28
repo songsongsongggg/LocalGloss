@@ -31,4 +31,5 @@ jobs:
           python3 -m unittest discover -s scripts/tests -v
           python3 scripts/prepare-release-data.py
           bash scripts/dev.sh cargo run --offline --locked -p localgloss-engine --example offline_check -- assets/cedict/generated
+          bash scripts/dev.sh cargo run --offline --locked -p localgloss-engine --example ranking_check -- assets/cedict/generated
           python3 scripts/verify-privacy.py
