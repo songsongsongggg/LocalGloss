@@ -1,0 +1,15 @@
+CC-CEDICT — Creative Commons Attribution-ShareAlike 4.0 International
+https://creativecommons.org/licenses/by-sa/4.0/
+Legal code: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+
+CC-CEDICT is a community maintained free Chinese-English dictionary, published by MDBG.
+Referenced work: CEDICT — Copyright (C) 1997, 1998 Paul Andrew Denisowski.
+Source: https://www.mdbg.net/chinese/dictionary?page=cedict
+Contributors: https://cc-cedict.org/editor/editor.php
+
+The bundled original archive retains the publisher's copyright and license notices.
+The LocalGloss TSV adaptation and manual priority adjustments are also provided
+under CC BY-SA 4.0. Changes: select simplified Han entries, normalize pinyin,
+merge senses, remove classifier-only senses, normalize cross references, add
+non-corpus ranking weights and convert to TSV. No endorsement by MDBG is implied.
+The data is provided without warranties; see the license for its full terms.

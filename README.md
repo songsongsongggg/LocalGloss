@@ -2,7 +2,9 @@
 
 LocalGloss 是面向 macOS 的离线拼音输入法。输入中文拼音时，候选旁显示英文译词；按 Tab 可直接输入译词，无需复制粘贴。
 
-**当前为 0.2.0 开发预览。** 仅支持 Apple Silicon；新增功能已通过核心测试和构建，安装后的真实键盘、密码框和跨应用回归仍待验收。暂不发布安装包或稳定版承诺。
+**当前为 v0.2.0-beta.1 测试版。** [下载应用与源码](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.2.0-beta.1) · [安装与回退](INSTALL.zh-CN.md) · [验证记录](docs/validation-0.2.0-beta.1.md)
+
+仅提供 Apple Silicon、macOS 13+ 构建。ZIP 内已包含开放词库，解压后按安装说明添加输入源。应用尚未做 Developer ID 签名与公证，完整真机兼容及隐私验收仍待完成，发布状态为 Pre-release。
 
 ## 功能
 
@@ -21,7 +23,7 @@ LocalGloss 是面向 macOS 的离线拼音输入法。输入中文拼音时，�
 
 ## 构建
 
-需要 Apple Silicon Mac、macOS 13 或更新系统、Command Line Tools、Rust 1.98.1（本次验证版本）和 Python 3.11 或更新版本。首次获取 Rust 依赖和词表需要联网，后续构建使用离线模式。
+需要 Apple Silicon Mac、macOS 13 或更新系统、Command Line Tools、Rust 1.98.1（本次验证版本）和 Python 3.11 或更新版本。首次获取 Rust 依赖需要联网；发布词表已随源码以固定归档提供，后续构建与词表转换均离线。
 
 ```sh
 bash scripts/dev.sh cargo fetch --locked
@@ -30,10 +32,10 @@ bash scripts/dev.sh check
 bash scripts/test-settings.sh
 ```
 
-阅读 [数据来源](DATA-SOURCES.md) 后，显式下载锁定版本的公开词表并构建：
+阅读 [数据来源](DATA-SOURCES.md) 后，从固定快照离线转换词表并构建：
 
 ```sh
-python3 scripts/prepare-data.py --download
+python3 scripts/prepare-release-data.py
 bash scripts/dev.sh bundle
 python3 scripts/verify-privacy.py
 ```
@@ -44,4 +46,6 @@ python3 scripts/verify-privacy.py
 
 本项目派生自 [青简](https://github.com/qingjian-team/qingjian) 的离线核心，沿用 **GPL-3.0-or-later**。macOS 外壳、离线装配及设置应用为 LocalGloss 的独立修改，详见 [NOTICE](NOTICE.md)。
 
-源码许可不覆盖所有上游词库来源。公开仓库保留数据来源和许可说明，完整词表由显式下载步骤获取；不会上传个人设置、主动词条或本机开发记录。
+发布数据采用 CC-CEDICT，原始快照和派生 TSV 按 CC BY-SA 4.0 分发；代码与数据许可分开保留。不会上传个人设置、主动词条或本机开发记录。
+
+欢迎按 [贡献指南](CONTRIBUTING.md) 提交问题和 PR；安全反馈见 [SECURITY.md](SECURITY.md)。

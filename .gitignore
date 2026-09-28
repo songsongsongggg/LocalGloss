@@ -6,6 +6,7 @@
 .DS_Store
 __pycache__/
 *.pyc
+/assets/cedict/generated/
 /assets/lexicon/dict.tsv
 /assets/glossary/glossary-en.tsv
 settings.json

@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh-Hans</string>
+	<key>CFBundleDisplayName</key>
+	<string>本地译词</string>
 	<key>CFBundleExecutable</key>
 	<string>localgloss-macos</string>
 	<key>CFBundleIdentifier</key>
@@ -12,41 +14,12 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>LocalGloss</string>
-	<key>CFBundleDisplayName</key>
-	<string>本地译词</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.2.0</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
-	<key>LSMinimumSystemVersion</key>
-	<string>13.0</string>
-	<key>LSBackgroundOnly</key>
-	<true/>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
-	<key>InputMethodConnectionName</key>
-	<string>local.localgloss.inputmethod_Connection</string>
-	<key>InputMethodServerControllerClass</key>
-	<string>LocalGlossInputController</string>
-	<key>InputMethodType</key>
-	<string>Keyboard</string>
-	<key>TISInputSourceID</key>
-	<string>local.localgloss.inputmethod</string>
-	<key>TISIntendedLanguage</key>
-	<string>zh-Hans</string>
-	<key>TICapsLockLanguageSwitchCapable</key>
-	<true/>
-	<key>tsInputMethodIconFileKey</key>
-	<string>localgloss-menu.pdf</string>
-	<key>TISIconIsTemplate</key>
-	<true/>
-	<key>tsInputMethodCharacterRepertoireKey</key>
-	<array>
-		<string>Hans</string>
-		<string>Latn</string>
-	</array>
+	<string>4</string>
 	<key>ComponentInputModeDict</key>
 	<dict>
 		<key>tsInputModeListKey</key>
@@ -57,6 +30,8 @@
 				<string>local.localgloss.inputmethod.Hans</string>
 				<key>TISIntendedLanguage</key>
 				<string>zh-Hans</string>
+				<key>tsInputModeAlternateMenuIconFileKey</key>
+				<string>localgloss-menu.pdf</string>
 				<key>tsInputModeCharacterRepertoireKey</key>
 				<array>
 					<string>Hans</string>
@@ -67,8 +42,6 @@
 				<key>tsInputModeIsVisibleKey</key>
 				<true/>
 				<key>tsInputModeMenuIconFileKey</key>
-				<string>localgloss-menu.pdf</string>
-				<key>tsInputModeAlternateMenuIconFileKey</key>
 				<string>localgloss-menu.pdf</string>
 				<key>tsInputModePaletteIconFileKey</key>
 				<string>localgloss-menu.pdf</string>
@@ -83,5 +56,34 @@
 			<string>local.localgloss.inputmethod.Hans</string>
 		</array>
 	</dict>
+	<key>InputMethodConnectionName</key>
+	<string>local.localgloss.inputmethod_Connection</string>
+	<key>InputMethodServerControllerClass</key>
+	<string>LocalGlossInputController</string>
+	<key>InputMethodType</key>
+	<string>Keyboard</string>
+	<key>LSBackgroundOnly</key>
+	<true/>
+	<key>LSMinimumSystemVersion</key>
+	<string>13.0</string>
+	<key>LocalGlossRelease</key>
+	<string>0.2.0-beta.1</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>TICapsLockLanguageSwitchCapable</key>
+	<true/>
+	<key>TISIconIsTemplate</key>
+	<true/>
+	<key>TISInputSourceID</key>
+	<string>local.localgloss.inputmethod</string>
+	<key>TISIntendedLanguage</key>
+	<string>zh-Hans</string>
+	<key>tsInputMethodCharacterRepertoireKey</key>
+	<array>
+		<string>Hans</string>
+		<string>Latn</string>
+	</array>
+	<key>tsInputMethodIconFileKey</key>
+	<string>localgloss-menu.pdf</string>
 </dict>
 </plist>

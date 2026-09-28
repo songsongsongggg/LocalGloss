@@ -10,10 +10,15 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FILES = [
     "Cargo.toml", "Cargo.lock", "LICENSE", "README.md", "NOTICE.md", "PRIVACY.md", "DATA-SOURCES.md",
-    "docs/user/guide.md", "docs/development.md",
+    "docs/user/guide.md", "docs/development.md", "docs/releasing.md", "docs/validation-0.2.0-beta.1.md",
+    "CONTRIBUTING.md", "SECURITY.md", "RELEASE-NOTES.md", "INSTALL.zh-CN.md",
+    ".github/workflows/localgloss-ci.yml", ".github/ISSUE_TEMPLATE/localgloss-bug.yml", ".github/pull_request_template.md",
+    "assets/cedict/README.md", "assets/cedict/LICENSE.txt", "assets/cedict/cedict-ts.txt.gz",
+    "assets/licenses/README.md", "assets/licenses/objc2-LICENSE.md", "assets/licenses/objc2-core-LICENSE.md", "assets/licenses/objc2-encode-LICENSE.md", "assets/licenses/OpenCC-LICENSE.txt", "assets/licenses/Apache-2.0.txt", "assets/licenses/MIT.txt",
+    "scripts/tests/test_cedict.py",
     "assets/lexicon/README.md", "assets/lexicon/00_meta/THUOCL_LICENSE.txt", "assets/glossary/README.md",
 ]
-SCRIPTS = ["dev.sh", "bundle-localgloss.sh", "build-settings.sh", "test-settings.sh", "make-menu-icon.py", "verify-privacy.py", "prepare-data.py", "export-source.py"]
+SCRIPTS = ["dev.sh", "bundle-localgloss.sh", "build-settings.sh", "test-settings.sh", "make-menu-icon.py", "verify-privacy.py", "prepare-data.py", "export-source.py", "cedict.py", "prepare-release-data.py", "collect-notices.py", "package-release.py"]
 DIRECTORIES = [
     "crates/qingjian-core", "crates/qingjian-dictionary", "crates/qingjian-translate", "crates/qingjian-format", "crates/localgloss-engine",
     "apps/localgloss-macos", "apps/localgloss-settings",
@@ -31,9 +36,13 @@ def main():
         paths.extend(path for path in (ROOT / directory).rglob("*") if path.is_file())
     for path in paths:
         name = path.relative_to(ROOT)
-        if path.is_symlink() or any(part.startswith(".") for part in name.parts):
+        if path.is_symlink() or (any(part.startswith(".") for part in name.parts) and str(name) not in FILES):
             raise SystemExit(f"Unexpected private or symlink path: {name}")
-        if path.suffix not in {".rs", ".toml", ".lock", ".md", ".swift", ".sh", ".py", ".plist", ".strings", ".txt"} and path.name != "LICENSE":
+        if str(name) == "assets/cedict/cedict-ts.txt.gz":
+            if hashlib.sha256(path.read_bytes()).hexdigest() != "05bb7cf923fd24cd636a703da2b0172d3b8686c3de28f613ac924e57ea44a95a":
+                raise SystemExit("CC-CEDICT checksum mismatch")
+            continue
+        if path.suffix not in {".rs", ".toml", ".lock", ".md", ".swift", ".sh", ".py", ".plist", ".strings", ".txt", ".yml"} and path.name != "LICENSE":
             raise SystemExit(f"Unexpected file type: {name}")
         if path.stat().st_size > 1024 * 1024:
             raise SystemExit(f"Unexpected large file: {name}")
@@ -50,7 +59,7 @@ def main():
         shutil.copyfile(source, target)
     manifest = destination / "Cargo.toml"
     manifest.write_text(manifest.read_text().replace("https://github.com/qingjian-team/qingjian", "https://github.com/songsongsongggg/LocalGloss"))
-    (destination / ".gitignore").write_text("/target/\n/dist/\n/.tools/\n*.app\n.env*\n.DS_Store\n__pycache__/\n*.pyc\n/assets/lexicon/dict.tsv\n/assets/glossary/glossary-en.tsv\nsettings.json\n")
+    (destination / ".gitignore").write_text("/target/\n/dist/\n/.tools/\n*.app\n.env*\n.DS_Store\n__pycache__/\n*.pyc\n/assets/cedict/generated/\n/assets/lexicon/dict.tsv\n/assets/glossary/glossary-en.tsv\nsettings.json\n")
     (destination / "rust-toolchain.toml").write_text('[toolchain]\nchannel = "1.98.1"\nprofile = "minimal"\ncomponents = ["rustfmt", "clippy"]\n')
     files = {str(path.relative_to(destination)): hashlib.sha256(path.read_bytes()).hexdigest()
              for path in destination.rglob("*") if path.is_file()}

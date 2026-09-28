@@ -8,7 +8,11 @@ fi
 if test -d "$LOCALGLOSS_ROOT/.tools/cargo-home"; then
   export CARGO_HOME="$LOCALGLOSS_ROOT/.tools/cargo-home"
 fi
-export DEVELOPER_DIR=/Library/Developer/CommandLineTools
+if test -d /Library/Developer/CommandLineTools; then
+  export DEVELOPER_DIR=/Library/Developer/CommandLineTools
+else
+  export DEVELOPER_DIR="$(/usr/bin/xcode-select -p)"
+fi
 export SDKROOT="$(/usr/bin/xcrun --show-sdk-path)"
 cd "$LOCALGLOSS_ROOT"
 case "${1:-}" in

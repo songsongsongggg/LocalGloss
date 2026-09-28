@@ -1,0 +1,21 @@
+name: LocalGloss 问题反馈
+description: 报告输入、译词、设置或安装问题
+title: '[Bug] '
+body:
+  - type: markdown
+    attributes:
+      value: 请只使用虚构示例，不附密码、密钥、输入历史或完整个人设置。安全问题请参考 SECURITY.md。
+  - type: input
+    id: environment
+    attributes:
+      label: 环境
+      description: LocalGloss 版本、macOS 版本、芯片架构、出现问题的应用
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤、预期和实际结果
+      description: 请使用可以公开的虚构词语，说明物理键盘操作。
+    validations:
+      required: true
