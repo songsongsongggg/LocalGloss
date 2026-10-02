@@ -22,6 +22,7 @@ fn shows_offline_gloss_and_commits_chinese() {
     type_pinyin(&mut engine, "kaifa");
     assert_eq!(engine.frame().rows[0].text, "开发");
     assert_eq!(engine.frame().rows[0].gloss, "develop · exploit");
+    assert_eq!(engine.frame().rows[0].primary_gloss, "develop");
     assert_eq!(engine.handle(Key::Space).commit.as_deref(), Some("开发"));
     assert!(engine.frame().preedit.is_empty());
 }
@@ -50,6 +51,31 @@ fn translation_commits_without_exposing_a_clipboard_api() {
             .commit
             .as_deref(),
         Some("exploit")
+    );
+}
+
+#[test]
+fn primary_display_matches_full_commit_without_splitting_literal_separators() {
+    let first = "first · literal separator; 完整译词 ".repeat(12);
+    let mut engine =
+        OfflineEngine::from_tsv(DICTIONARY, &format!("开发\t{first}\tsecond sense\n")).unwrap();
+    type_pinyin(&mut engine, "kaifa");
+    let displayed = engine.frame().rows[0].primary_gloss.clone();
+    assert_eq!(displayed, first.trim());
+    assert!(engine.frame().rows[0].gloss.contains("second sense"));
+    assert_eq!(
+        engine
+            .handle(Key::HighlightedTranslation { second: false })
+            .commit,
+        Some(displayed)
+    );
+    type_pinyin(&mut engine, "kaifa");
+    assert_eq!(
+        engine
+            .handle(Key::HighlightedTranslation { second: true })
+            .commit
+            .as_deref(),
+        Some("second sense")
     );
 }
 

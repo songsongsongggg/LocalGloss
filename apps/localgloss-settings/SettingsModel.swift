@@ -1,7 +1,8 @@
 //! 设置与唯一的落盘入口；只在用户点击保存时写入。
 import Foundation
+import Darwin
 
-struct SettingsModel: Codable {
+struct SettingsModel: Codable, Equatable {
     var version = 1
     var font_size = 16
     var page_size = 9
@@ -21,24 +22,31 @@ struct SettingsModel: Codable {
         }
         var used = Set<String>()
         for term in terms {
-            guard !term.code.isEmpty, term.code.utf8.count <= 32,
-                  term.code.utf8.allSatisfy({ (97...122).contains($0) }),
-                  !term.text.contains("|"),
-                  !term.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
-                  term.text.unicodeScalars.count <= 64, term.gloss.unicodeScalars.count <= 240,
-                  !term.text.unicodeScalars.contains(where: CharacterSet.controlCharacters.contains),
-                  !term.gloss.unicodeScalars.contains(where: CharacterSet.controlCharacters.contains),
-                  used.insert(term.code).inserted else {
+            guard term.fieldErrors.allSatisfy({ $0.isEmpty }), used.insert(term.code).inserted else {
                 throw ValidationError.invalid("输入码须为 1–32 个小写字母且不能重复；词条最多 64 字、译词最多 240 字，均为单行。")
             }
         }
     }
 
+    static func snapshot(of file: URL = Self.file) throws -> Data? {
+        let manager = FileManager.default
+        for url in [file.deletingLastPathComponent(), file] {
+            if let attributes = try? manager.attributesOfItem(atPath: url.path),
+               attributes[.type] as? FileAttributeType == .typeSymbolicLink {
+                throw ValidationError.invalid("设置路径是符号链接，未读取。")
+            }
+        }
+        guard manager.fileExists(atPath: file.path) else { return nil }
+        let attributes = try manager.attributesOfItem(atPath: file.path)
+        guard attributes[.type] as? FileAttributeType == .typeRegular,
+              let size = attributes[.size] as? NSNumber, size.intValue <= 262144 else {
+            throw ValidationError.invalid("设置文件类型或大小不受支持。")
+        }
+        return try Data(contentsOf: file)
+    }
+
     static func load(from file: URL = Self.file) throws -> SettingsModel {
-        guard FileManager.default.fileExists(atPath: file.path) else { return SettingsModel() }
-        let size = try FileManager.default.attributesOfItem(atPath: file.path)[.size] as? NSNumber
-        guard let size, size.intValue <= 262144 else { throw ValidationError.invalid("设置文件过大，未加载。") }
-        let data = try Data(contentsOf: file)
+        guard let data = try snapshot(of: file) else { return SettingsModel() }
         guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any],
               Set(object.keys) == Set(["version", "font_size", "page_size", "tab_translation", "symbol_paging", "chinese_punctuation", "terms"]),
               let terms = object["terms"] as? [[String: Any]],
@@ -50,7 +58,7 @@ struct SettingsModel: Codable {
         return result
     }
 
-    func save(to directory: URL = Self.directory) throws {
+    func save(to directory: URL = Self.directory, expected: Data? = nil, checkConflict: Bool = false) throws {
         let file = directory.appendingPathComponent("settings.json")
         try validate()
         let manager = FileManager.default
@@ -60,6 +68,15 @@ struct SettingsModel: Codable {
             }
         }
         try manager.createDirectory(at: directory, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
+        // 对同目录的编辑器保存串行化；外部不遵循锁的写入仍需基线比较。
+        let descriptor = open(directory.path, O_RDONLY | O_NOFOLLOW)
+        guard descriptor >= 0 else { throw ValidationError.invalid("无法打开设置目录，未保存。") }
+        defer { close(descriptor) }
+        guard flock(descriptor, LOCK_EX | LOCK_NB) == 0 else { throw ValidationError.invalid("其他窗口正在保存，请稍后重试。") }
+        defer { flock(descriptor, LOCK_UN) }
+        if checkConflict, try Self.snapshot(of: file) != expected {
+            throw ValidationError.invalid("设置已被其他窗口或程序修改。请先放弃草稿并重新加载，再进行编辑。")
+        }
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let data = try encoder.encode(self)

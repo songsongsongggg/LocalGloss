@@ -42,25 +42,25 @@ impl CandidateView {
         unsafe { msg_send![super(this), initWithFrame: NSRect::ZERO] }
     }
 
-    pub fn set_frame(&self, frame: Frame) -> NSSize {
+    pub fn set_frame(&self, frame: Frame, available_width: f64) -> NSSize {
         let font = NSFont::systemFontOfSize(self.ivars().borrow().1.font_size as f64);
         let gloss_font = NSFont::systemFontOfSize(14.0);
         let foreground = NSColor::labelColor();
-        let column = text_column(&frame, &font, &foreground);
+        let column = text_column(&frame, &font, &foreground, available_width.min(560.0));
         let desired_width = frame
             .rows
             .iter()
             .map(|row| {
                 column
-                    + attributed(&row.gloss, &gloss_font, &foreground)
+                    + attributed(&row.primary_gloss, &gloss_font, &foreground)
                         .size()
                         .width
                     + 18.0
             })
-            .fold(420.0, f64::max)
-            .min(620.0);
+            .fold(420.0, f64::max);
         // 同一次组合只扩宽、不缩窄，避免逐键查询时窗口左右跳动。
-        let width = desired_width.max(self.frame().size.width);
+        let width =
+            crate::layout::panel_width(desired_width, self.frame().size.width, available_width);
         let row_height = self.ivars().borrow().1.font_size as f64 + 16.0;
         let height = if let Some(detail) = &frame.detail {
             75.0 + wrapped(detail, &font, &foreground, width - 28.0).len() as f64 * row_height
@@ -114,7 +114,7 @@ impl CandidateView {
             .drawAtPoint(NSPoint::new(12.0, self.bounds().size.height - 23.0));
             return;
         }
-        let column = text_column(frame, &font, &normal);
+        let column = text_column(frame, &font, &normal, width);
         for (index, row) in frame.rows.iter().enumerate() {
             let y = 38.0 + index as f64 * (settings.font_size as f64 + 16.0);
             let selected = index == frame.highlighted;
@@ -143,10 +143,10 @@ impl CandidateView {
             attributed(&(index + 1).to_string(), &small, &color)
                 .drawAtPoint(NSPoint::new(14.0, y + 2.0));
             clipped(&row.text, &font, &color, column - 48.0).drawAtPoint(NSPoint::new(36.0, y));
-            let gloss = if row.gloss.is_empty() {
+            let gloss = if row.primary_gloss.is_empty() {
                 "暂无译词"
             } else {
-                &row.gloss
+                &row.primary_gloss
             };
             clipped(gloss, &gloss_font, &gloss_color, width - column - 14.0)
                 .drawAtPoint(NSPoint::new(column, y + 1.0));
@@ -160,7 +160,7 @@ impl CandidateView {
         {
             "当前词暂无译词 · Space 中文 · Page Up / Down 翻页"
         } else if settings.tab_translation {
-            "Space 中文 · Tab 英文 · F1 释义"
+            "Space 中文 · Tab 第一释义 · F1 完整释义"
         } else {
             "Space 中文 · ⌥数字 英文 · F1 释义"
         };
@@ -169,17 +169,19 @@ impl CandidateView {
     }
 }
 
-fn text_column(frame: &Frame, font: &NSFont, color: &NSColor) -> f64 {
-    frame
+fn text_column(frame: &Frame, font: &NSFont, color: &NSColor, width: f64) -> f64 {
+    let measured = frame
         .rows
         .iter()
         .map(|row| attributed(&row.text, font, color).size().width)
-        .fold(48.0, f64::max)
-        .min(180.0)
-        + 52.0
+        .fold(48.0, f64::max);
+    crate::layout::column_width(measured, width)
 }
 
 fn clipped(text: &str, font: &NSFont, color: &NSColor, width: f64) -> Retained<NSAttributedString> {
+    if width <= 0.0 {
+        return attributed("", font, color);
+    }
     let original = attributed(text, font, color);
     if original.size().width <= width {
         return original;

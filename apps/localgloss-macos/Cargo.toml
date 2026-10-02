@@ -1,7 +1,7 @@
 [package]
 name = "localgloss-macos"
 description = "LocalGloss 纯离线 macOS 输入法外壳"
-version = "0.2.0"
+version = "0.3.0-alpha.2"
 edition.workspace = true
 license.workspace = true
 

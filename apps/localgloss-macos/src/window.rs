@@ -33,7 +33,6 @@ impl CandidateWindow {
             self.clear();
             return;
         }
-        let size = self.view.set_frame(frame);
         if anchor == NSRect::ZERO {
             anchor = NSRect::new(NSEvent::mouseLocation(), NSSize::new(0.0, 16.0));
         }
@@ -43,6 +42,9 @@ impl CandidateWindow {
             .find(|screen| contains(screen.frame(), anchor.origin))
             .map(|screen| screen.visibleFrame())
             .or_else(|| NSScreen::mainScreen(self.mtm).map(|screen| screen.visibleFrame()));
+        let size = self
+            .view
+            .set_frame(frame, screen.map_or(560.0, |screen| screen.size.width));
         let origin = if let Some(screen) = screen {
             let max_x = (screen.origin.x + screen.size.width - size.width).max(screen.origin.x);
             let max_y = (screen.origin.y + screen.size.height - size.height).max(screen.origin.y);

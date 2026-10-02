@@ -109,6 +109,12 @@ impl OfflineEngine {
             .take(self.settings.page_size)
             .map(|candidate| Row {
                 text: candidate.text.clone(),
+                primary_gloss: candidate
+                    .translation
+                    .as_ref()
+                    .and_then(|translation| translation.senses().first())
+                    .map(|sense| sense.text.clone())
+                    .unwrap_or_default(),
                 gloss: candidate
                     .translation
                     .as_ref()

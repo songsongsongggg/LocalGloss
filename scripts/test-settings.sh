@@ -8,6 +8,6 @@ else
   export DEVELOPER_DIR="$(/usr/bin/xcode-select -p)"
 fi
 mkdir -p "$LOCALGLOSS_ROOT/target"
-xcrun swiftc "$LOCALGLOSS_ROOT"/apps/localgloss-settings/{UserTerm,SettingsModel,ValidationError}.swift \
+xcrun swiftc "$LOCALGLOSS_ROOT"/apps/localgloss-settings/{UserTerm,SettingsModel,SettingsDraft,TermPreview,ValidationError}.swift \
   "$LOCALGLOSS_ROOT/apps/localgloss-settings/tests/main.swift" -o "$LOCALGLOSS_ROOT/target/settings-tests"
 "$LOCALGLOSS_ROOT/target/settings-tests"

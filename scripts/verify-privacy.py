@@ -34,6 +34,6 @@ for path in settings_sources:
     if path.name != 'SettingsModel.swift':
         assert '.write(' not in text, path.name
 # 用户设置保存仅由 saveSettings 显式触发。
-assert 'try model.save()' in (ROOT/'apps/localgloss-settings/SettingsWindow.swift').read_text()
+assert 'try model.save(expected: baseline, checkConflict: true)' in (ROOT/'apps/localgloss-settings/SettingsWindow.swift').read_text()
 print(f'privacy structure checks passed: {len(packages)} runtime packages, {len(sources)} source files')
 print('pending: installed IMK network, filesystem, clipboard, password-field and focus checks')

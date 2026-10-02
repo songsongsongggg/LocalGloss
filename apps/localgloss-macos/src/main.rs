@@ -2,6 +2,7 @@
 mod client;
 mod controller;
 mod host;
+mod layout;
 mod preferences;
 mod security;
 mod view;
