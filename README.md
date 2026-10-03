@@ -6,11 +6,11 @@ LocalGloss 是面向 macOS 的离线拼音输入法。输入中文拼音时，�
 
 仅提供 Apple Silicon、macOS 13+ 构建。ZIP 内已包含开放词库，解压后按安装说明添加输入源。本机用户已确认常见输入和候选排序可用；尚未覆盖所有应用与系统版本。应用仍采用 ad-hoc 签名，未做 Developer ID 签名与公证。
 
-[下载 v0.3.0-alpha.5 测试版](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0-alpha.5)：增加可搜索词条编辑器与草稿保护，适合愿意反馈问题的使用者。完整 IMK、密码框和跨应用验收尚未完成；日常使用仍可选择稳定版。
+[下载 v0.3.0-alpha.5 测试版](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0-alpha.5)：采用 Rime 中文候选词库，补齐常见组合，并提供原样英文候选；保留可搜索词条编辑器与草稿保护。完整 IMK、密码框和跨应用验收尚未完成；日常使用仍可选择稳定版。
 
 ## Homebrew 安装
 
-提供项目维护的自定义 tap，当前图标与词条编辑器在 alpha 渠道；稳定渠道仍为 v0.2.0。
+提供项目维护的自定义 tap，当前 Rime 词库与中英混输改进在 alpha 渠道；稳定渠道仍为 v0.2.0。
 
 ```sh
 brew tap songsongsongggg/localgloss https://github.com/songsongsongggg/LocalGloss

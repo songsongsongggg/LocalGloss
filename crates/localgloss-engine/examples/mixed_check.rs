@@ -41,6 +41,25 @@ fn main() {
         assert!(engine.frame().preedit.is_empty());
         println!("{code} -> {expected}");
     }
+    // Rime 收录而译词表缺失的公开组合，不应因没有英文而阻止中文上屏。
+    for letter in "wode".chars() {
+        engine.handle(Key::Letter(letter));
+    }
+    assert_eq!(engine.frame().rows[0].text, "我的");
+    assert!(engine.frame().rows[0].primary_gloss.is_empty());
+    assert!(
+        engine
+            .handle(Key::Translation {
+                digit: 1,
+                second: false
+            })
+            .commit
+            .is_none()
+    );
+    assert_eq!(engine.frame().preedit, "wode");
+    assert_eq!(engine.handle(Key::Space).commit.as_deref(), Some("我的"));
+    assert!(engine.frame().preedit.is_empty());
+    println!("Rime-only candidate: 我的; missing gloss preserves Chinese input");
     for letter in "doushikaifa".chars() {
         engine.handle(Key::Letter(letter));
     }

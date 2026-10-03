@@ -16,10 +16,11 @@ FILES = [
     "assets/localgloss/README.md", "assets/localgloss/common-phrases.tsv", "assets/jieba/README.md", "assets/jieba/LICENSE.txt", "assets/jieba/dict.txt.gz",
     "assets/cedict/README.md", "assets/cedict/LICENSE.txt", "assets/cedict/cedict-ts.txt.gz",
     "assets/licenses/README.md", "assets/licenses/objc2-LICENSE.md", "assets/licenses/objc2-core-LICENSE.md", "assets/licenses/objc2-encode-LICENSE.md", "assets/licenses/OpenCC-LICENSE.txt", "assets/licenses/Apache-2.0.txt", "assets/licenses/MIT.txt",
-    "scripts/tests/test_cedict.py",
+    "scripts/tests/test_cedict.py", "scripts/tests/test_rime.py",
+    "assets/rime/README.md", "assets/rime/LICENSE.txt", "assets/rime/AUTHORS.txt", "assets/rime/pinyin_simp.dict.yaml.gz",
     "assets/lexicon/README.md", "assets/lexicon/00_meta/THUOCL_LICENSE.txt", "assets/glossary/README.md",
 ]
-SCRIPTS = ["dev.sh", "bundle-localgloss.sh", "build-settings.sh", "test-settings.sh", "test-settings-integration.sh", "make-menu-icon.py", "make-app-icon.sh", "make-app-icon.swift", "verify-privacy.py", "prepare-data.py", "export-source.py", "cedict.py", "prepare-release-data.py", "collect-notices.py", "package-release.py"]
+SCRIPTS = ["dev.sh", "bundle-localgloss.sh", "build-settings.sh", "test-settings.sh", "test-settings-integration.sh", "make-menu-icon.py", "make-app-icon.sh", "make-app-icon.swift", "verify-privacy.py", "prepare-data.py", "export-source.py", "cedict.py", "rime.py", "prepare-release-data.py", "collect-notices.py", "package-release.py"]
 DIRECTORIES = [
     "crates/qingjian-core", "crates/qingjian-dictionary", "crates/qingjian-translate", "crates/qingjian-format", "crates/localgloss-engine",
     "apps/localgloss-macos", "apps/localgloss-settings",
@@ -40,7 +41,8 @@ def main():
         if path.is_symlink() or (any(part.startswith(".") for part in name.parts) and str(name) not in FILES):
             raise SystemExit(f"Unexpected private or symlink path: {name}")
         archives = {"assets/cedict/cedict-ts.txt.gz": "05bb7cf923fd24cd636a703da2b0172d3b8686c3de28f613ac924e57ea44a95a",
-                    "assets/jieba/dict.txt.gz": "35e47c1fb9baf2a351a179afb8c22878caa0305e7294c855f05af524f46d51a3"}
+                    "assets/jieba/dict.txt.gz": "35e47c1fb9baf2a351a179afb8c22878caa0305e7294c855f05af524f46d51a3",
+                    "assets/rime/pinyin_simp.dict.yaml.gz": "1420536dec32cb4c7b070bdbdbc07f7a72f342ff1c22b7945f120cac0d5e6cae"}
         if str(name) in archives:
             if hashlib.sha256(path.read_bytes()).hexdigest() != archives[str(name)]:
                 raise SystemExit(f"Archive checksum mismatch: {name}")

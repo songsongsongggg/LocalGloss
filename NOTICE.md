@@ -16,3 +16,5 @@ Rust 第三方依赖版本列于 `Cargo.lock`，各依赖按自身许可提供�
 2026-09-28 的公开测试版新增 CC-CEDICT 数据转换、依赖许可归档、CI 与版本发布脚本。数据快照与派生 TSV 采用 CC BY-SA 4.0，保留 MDBG、CC-CEDICT 社区与原 CEDICT 作者署名；详见 DATA-SOURCES.md。
 
 0.2.0 新增 jieba 静态词频（Copyright (c) 2013 Sun Junyi，MIT）；原文许可见 assets/jieba/LICENSE.txt。仅使用数据，不引入 jieba 运行库；生成的 CC-CEDICT 派生表保留两项来源声明。
+
+2026-10-04 的 alpha.5 开发版使用 Rime pinyin-simp 固定词表，派生自 Android Pinyin IME，采用 Apache-2.0。原始 AUTHORS / LICENSE 与本项目转换、误读过滤说明见 assets/rime/，随应用和源码分发。Rime 词条保留原许可；CC-CEDICT 释义和低权重补充仍为 CC BY-SA 4.0。

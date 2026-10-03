@@ -38,4 +38,4 @@ Swift 测试使用独立临时目录与虚构词条，覆盖保存、0600 权限
 
 0.2.0 新增原生设置、主动词条置顶、Ctrl＋Shift＋Space 英文直通、可选中文标点和 F1 释义分页；保持无云服务、无自动学习、无输入日志。0.1.1 已有 Tab 译词、符号翻页与稳定候选宽度。
 
-发布版使用 CC-CEDICT 与 jieba 静态词频；执行 `python3 scripts/prepare-release-data.py` 和 `python3 -m unittest discover -s scripts/tests -v` 检查转换，再运行 `bash scripts/dev.sh cargo run --offline --locked -p localgloss-engine --example offline_check -- assets/cedict/generated` 验证实际词表。测试与发布记录见 [0.2.0 验证](validation-0.2.0.md)。
+alpha.5 使用 Rime pinyin-simp 中文候选与权重、CC-CEDICT 英文释义及低权重补充；历史稳定版使用 CC-CEDICT 与 jieba 静态词频。执行 `python3 scripts/prepare-release-data.py` 和 `python3 -m unittest discover -s scripts/tests -v` 检查转换，再运行 `bash scripts/dev.sh cargo run --offline --locked -p localgloss-engine --example offline_check -- assets/cedict/generated` 验证实际词表。测试与发布记录见 [0.2.0 验证](validation-0.2.0.md)。

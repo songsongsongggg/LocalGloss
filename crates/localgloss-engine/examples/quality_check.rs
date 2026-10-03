@@ -63,6 +63,7 @@ fn main() {
         })
         .collect();
     let mut regressions = Vec::new();
+    let mut rank_changes = Vec::new();
     if let Some(baseline) = args.get(2) {
         let baseline: serde_json::Value =
             serde_json::from_slice(&std::fs::read(baseline).expect("baseline file"))
@@ -73,9 +74,21 @@ fn main() {
             for field in ["code", "accepted", "split"] {
                 assert_eq!(before[field], after[field], "fixture changed");
             }
-            if after["rank"].as_u64() > before["rank"].as_u64() {
+            let old_rank = before["rank"].as_u64().unwrap();
+            let new_rank = after["rank"].as_u64().unwrap();
+            if new_rank > old_rank {
+                rank_changes
+                    .push(json!({"code":after["code"], "before":old_rank, "after":new_rank}));
+            }
+            // 词库迁移允许前三内的同音顺序变化；不能把可见词挤出原有可用范围。
+            if (old_rank <= 3 && new_rank > 3) || (old_rank <= 9 && new_rank > 9) {
                 regressions.push(after["code"].clone());
             }
+        }
+        let old_first = old.iter().filter(|row| row["rank"] == 1).count();
+        let new_first = cases.iter().filter(|row| row["rank"] == 1).count();
+        if new_first < old_first {
+            regressions.push(json!("aggregate first-choice accuracy"));
         }
     }
     println!(
@@ -83,7 +96,7 @@ fn main() {
         serde_json::to_string_pretty(&json!({"load_us":load_us,
         "key_samples":latencies.len(),"warm_key_p50_ns":latencies[latencies.len()/2],
         "warm_key_p95_ns":latencies[latencies.len()*95/100],"groups":groups,
-        "regressions":regressions,"cases":cases}))
+        "regressions":regressions,"rank_changes":rank_changes,"cases":cases}))
         .unwrap()
     );
     assert!(regressions.is_empty(), "candidate ranking regressed");

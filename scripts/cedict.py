@@ -85,6 +85,8 @@ def convert(text, frequencies=None, supplement=''):
             senses.setdefault(word, [gloss.strip()])
             added += 1
     header = '# CC-CEDICT / MDBG and LocalGloss contributors; CC BY-SA 4.0. Static weights from jieba / Sun Junyi; MIT; supplemental fallback weights are curated, not corpus counts. See bundled notices.\n'
+    if not frequencies:
+        header = '# CC-CEDICT / MDBG and LocalGloss contributors; CC BY-SA 4.0. See bundled notices.\n'
     dictionary = header + ''.join(f'{word}\t{pinyin}\t{weight}\n' for (word, pinyin), weight in sorted(words.items()))
     # 引擎上限两条；第一条单列，其余合并为第二条，使详情仍保留全部释义。
     glossary = header + ''.join(word + '\t' + '\t'.join(glosses[:1] + (['; '.join(glosses[1:])] if len(glosses) > 1 else [])) + '\n' for word, glosses in sorted(senses.items()))

@@ -1,16 +1,14 @@
 # 发布数据来源
 
-默认使用 **CC-CEDICT**，完全替代旧原型中混合来源的词库与机器释义表。代码许可是 GPL-3.0-or-later；CC-CEDICT 及其派生表单独采用 CC BY-SA 4.0；新增静态词频来源 jieba 采用 MIT，保留其声明。
+alpha.5 起以 **Rime pinyin-simp** 提供主要中文候选及静态权重，以 **CC-CEDICT** 提供英文释义和低权重中文补充。代码是 GPL-3.0-or-later；Rime 数据为 Apache-2.0；CC-CEDICT 和项目补充数据为 CC BY-SA 4.0，各来源保留独立声明。
 
-来源、日期、哈希、转换规则及署名见 [CC-CEDICT 说明](assets/cedict/README.md)。MDBG 的 [官方下载页](https://www.mdbg.net/chinese/dictionary?page=cedict) 与归档头部均标明 CC BY-SA 4.0。仓库保留 2026-09-27T12:50:23Z 的原始压缩快照、许可链接及转换脚本；派生 TSV 与原数据按同一许可分发。
+固定提交、归档哈希、Android Pinyin IME 来源署名和本项目过滤规则见 [Rime 数据说明](assets/rime/README.md)。转换后 Rime 有 65,121 个拼音条目；CC-CEDICT / 项目表补充 82,127 个缺失条目，统一权重 1，不覆盖 Rime。合计 147,248 个拼音条目。
 
-执行 `python3 scripts/prepare-release-data.py` 即可离线生成发布数据；不联网、不读取个人设置、不修改旧词库。数据归档和生成表都校验 SHA-256。应用 ZIP 内已包含生成表，终端用户无需执行转换。
+[CC-CEDICT 说明](assets/cedict/README.md) 保留 MDBG、CC-CEDICT 社区及原作者署名。项目 [常用表达表](assets/localgloss/README.md) 补 18 个缺失词形，保留原有释义；当前共 120,559 个有英文释义的词形。中文候选不要求具备译词；没有释义时仍能提交中文，不联网补译。
 
-CC-CEDICT 并非输入法语料词频库。0.2.0 起采用固定的 [jieba 词频快照](assets/jieba/README.md) 改善同类候选排序，替代 beta.1 的手工优先词和统一权重。该数据与转换均随源码提供，构建过程保持离线，不采集个人输入来训练排序。英语释义可能不适合直接用于每一个语境；词形合并也可能合并不同读音的词义。
+执行 `python3 scripts/prepare-release-data.py` 从仓库内固定归档离线生成；不读取个人配置或输入历史。脚本验证源归档 SHA-256，拒绝覆盖不同的生成表，清单记录来源、数量与输出哈希。应用 ZIP 内包含生成表，使用者无需联网获取词库。
 
-## 常用表达补充
-
-下一测试版增加 [LocalGloss 常用表达表](assets/localgloss/README.md)，只补 CC-CEDICT 缺失短语。由本项目贡献者编写，采用 CC BY-SA 4.0；优先沿用 jieba 已有词频，缺失时使用明确标注的固定优先级，不冒充真实语料频次。本次新增 18 个词形；生成清单记录补充文件哈希和数量。
+历史 v0.2.0 至 alpha.4 使用 CC-CEDICT + [jieba 静态词频](assets/jieba/README.md)，jieba 为 MIT；快照和转换能力保留用于复现。alpha.5 默认排序不再合并 jieba 权重，也不增加 Rime 运行库。公开静态词频不能替代上下文语言模型，仍可能出现同音词排序差异。
 
 ## 保留的上游历史说明
 
