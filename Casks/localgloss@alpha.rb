@@ -1,6 +1,6 @@
 cask "localgloss@alpha" do
-  version "0.3.0-alpha.4"
-  sha256 "5809f38981a53696ce97c78950281b098ff96f67391c56287de42879cc66ef6e"
+  version "0.3.0-alpha.5"
+  sha256 "2a9f290b3713a1d6f0672ade63f4248f7019b7203d29fec1d868f839debc06b5"
 
   url "https://github.com/songsongsongggg/LocalGloss/releases/download/v#{version}/LocalGloss-v#{version}-macOS-arm64.zip"
   name "LocalGloss"
