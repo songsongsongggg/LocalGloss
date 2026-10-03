@@ -1,0 +1,24 @@
+# LocalGloss contributors; CC BY-SA 4.0. Only fills missing dictionary entries.
+# word<TAB>pinyin<TAB>fallback priority (not measured frequency)<TAB>English gloss
+都是	dou shi	20000	all are
+也是	ye shi	20000	also is
+还有	hai you	20000	also have; in addition
+没有	mei you	20000	do not have; there is no
+好的	hao de	12000	okay
+都要	dou yao	10000	all need
+都能	dou neng	10000	all can
+都在	dou zai	10000	all are at
+都不	dou bu	10000	none do
+都没	dou mei	10000	none have
+就好	jiu hao	10000	that will do
+就要	jiu yao	10000	be about to; will need
+就能	jiu neng	10000	then can
+就不	jiu bu	10000	then do not
+还要	hai yao	10000	still need; also want
+还在	hai zai	10000	still at
+还好	hai hao	10000	fortunately; fairly good
+还没	hai mei	10000	not yet
+还可以	hai ke yi	10000	fairly good; still possible
+我想	wo xiang	10000	I think; I would like
+我会	wo hui	10000	I can; I will
+我要	wo yao	10000	I want; I need

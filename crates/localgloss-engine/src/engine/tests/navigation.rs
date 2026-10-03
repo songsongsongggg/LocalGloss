@@ -59,11 +59,18 @@ fn page_navigation_selects_first_row_even_on_a_short_last_page() {
     let mut engine = OfflineEngine::from_tsv(&dictionary, "").unwrap();
     type_pinyin(&mut engine, "ci");
     assert_eq!(engine.frame().pages, 3);
+    assert!(
+        engine
+            .frame()
+            .rows
+            .iter()
+            .any(|row| row.raw && row.text == "ci")
+    );
     engine.handle(Key::Next);
     let second = engine.handle(Key::PageNext).frame;
     assert_eq!((second.page, second.highlighted), (1, 0));
     let last = engine.handle(Key::PageNext).frame;
-    assert_eq!((last.page, last.highlighted, last.rows.len()), (2, 0, 2));
+    assert_eq!((last.page, last.highlighted, last.rows.len()), (2, 0, 3));
     let bounded = engine.handle(Key::PageNext).frame;
     assert_eq!((bounded.page, bounded.highlighted), (2, 0));
     let previous = engine.handle(Key::PagePrevious).frame;

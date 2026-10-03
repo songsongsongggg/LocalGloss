@@ -143,7 +143,9 @@ impl CandidateView {
             attributed(&(index + 1).to_string(), &small, &color)
                 .drawAtPoint(NSPoint::new(14.0, y + 2.0));
             clipped(&row.text, &font, &color, column - 48.0).drawAtPoint(NSPoint::new(36.0, y));
-            let gloss = if row.primary_gloss.is_empty() {
+            let gloss = if row.raw {
+                "原样英文"
+            } else if row.primary_gloss.is_empty() {
                 "暂无译词"
             } else {
                 &row.primary_gloss
@@ -158,11 +160,11 @@ impl CandidateView {
             .get(frame.highlighted)
             .is_some_and(|row| row.gloss.is_empty())
         {
-            "当前词暂无译词 · Space 中文 · Page Up / Down 翻页"
+            "Space 选中候选 · Enter 原样输入 · Page Up / Down 翻页"
         } else if settings.tab_translation {
-            "Space 中文 · Tab 第一释义 · F1 完整释义"
+            "Space 选中候选 · Tab 第一释义 · F1 完整释义"
         } else {
-            "Space 中文 · ⌥数字 英文 · F1 释义"
+            "Space 选中候选 · ⌥数字 译词 · F1 释义"
         };
         clipped(hint, &small, &secondary, width - 24.0)
             .drawAtPoint(NSPoint::new(12.0, self.bounds().size.height - 23.0));

@@ -9,6 +9,23 @@ from cedict import convert, parse_frequencies
 
 
 class ConversionTests(unittest.TestCase):
+    def test_supplement_fills_missing_phrase_without_replacing_source(self):
+        source = '斗士 斗士 [dou4 shi4] /warrior/\n'
+        supplement = '都是\tdou shi\t20000\tall are\n斗士\tdou shi\t99999\twrong gloss\n'
+        dictionary, glossary, counts = convert(source, {'斗士': 500}, supplement)
+        self.assertIn('都是\tdou shi\t20000\n', dictionary)
+        self.assertIn('斗士\tdou shi\t500\n', dictionary)
+        self.assertIn('斗士\twarrior\n', glossary)
+        self.assertNotIn('wrong gloss', glossary)
+        self.assertEqual(counts['supplement_added_entries'], 1)
+
+    def test_supplement_validation(self):
+        for text in ['都是\tdou\t20000\tall are', '都是\tdou shi\t0\tall are',
+                     '都是\tdou shi\t20000\t', '都是\tdou shi\t20000\tall|are',
+                     '都是\tdou shi\t20000\tall are\n' * 2]:
+            with self.assertRaises(ValueError):
+                convert('', {}, text)
+
     def test_static_frequency_beats_unicode_order_and_unknown_fallback(self):
         source = '亟需 亟需 [ji2 xu1] /urgently need/\n繼續 继续 [ji4 xu4] /continue/\n幾希 几希 [ji1 xi1] /very little/\n'
         dictionary, _, counts = convert(source, parse_frequencies('继续 14690 v\n亟需 52 v\n'))

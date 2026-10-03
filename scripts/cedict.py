@@ -25,7 +25,7 @@ def parse_frequencies(text):
     return frequencies
 
 
-def convert(text, frequencies=None):
+def convert(text, frequencies=None, supplement=''):
     frequencies = frequencies or {}
     words, senses, skipped = {}, {}, 0
     for number, raw in enumerate(text.splitlines(), 1):
@@ -59,9 +59,34 @@ def convert(text, frequencies=None):
         for sense in glosses:
             if sense not in senses.setdefault(word, []):
                 senses[word].append(sense)
-    header = '# Adapted from CC-CEDICT / MDBG contributors; CC BY-SA 4.0. Static weights from jieba / Sun Junyi; MIT. See bundled notices.\n'
+    added = 0
+    seen = set()
+    for number, row in enumerate(supplement.splitlines(), 1):
+        if not row or row.startswith('#'):
+            continue
+        fields = row.split('\t')
+        if len(fields) != 4:
+            raise ValueError(f'Malformed supplement at line {number}')
+        word, pinyin, weight, gloss = fields
+        syllables = pinyin.split(' ')
+        if (not HAN.fullmatch(word) or len(word) != len(syllables)
+                or not all(re.fullmatch('[a-z]+', part) for part in syllables)
+                or not weight.isascii() or not weight.isdigit()
+                or not 1 <= int(weight) <= 0xffffffff
+                or not gloss.strip() or '|' in gloss):
+            raise ValueError(f'Invalid supplement at line {number}')
+        key = (word, pinyin)
+        if key in seen:
+            raise ValueError(f'Duplicate supplement at line {number}')
+        seen.add(key)
+        # 已有词典的读音和释义保留，只补缺失短语。
+        if key not in words:
+            words[key] = frequencies.get(word, int(weight))
+            senses.setdefault(word, [gloss.strip()])
+            added += 1
+    header = '# CC-CEDICT / MDBG and LocalGloss contributors; CC BY-SA 4.0. Static weights from jieba / Sun Junyi; MIT; supplemental fallback weights are curated, not corpus counts. See bundled notices.\n'
     dictionary = header + ''.join(f'{word}\t{pinyin}\t{weight}\n' for (word, pinyin), weight in sorted(words.items()))
     # 引擎上限两条；第一条单列，其余合并为第二条，使详情仍保留全部释义。
     glossary = header + ''.join(word + '\t' + '\t'.join(glosses[:1] + (['; '.join(glosses[1:])] if len(glosses) > 1 else [])) + '\n' for word, glosses in sorted(senses.items()))
-    return dictionary, glossary, {'dictionary_entries': len(words), 'glossary_words': len(senses), 'skipped_entries': skipped,
+    return dictionary, glossary, {'dictionary_entries': len(words), 'glossary_words': len(senses), 'skipped_entries': skipped, 'supplement_added_entries': added,
                                  'frequency_matched_entries': sum(word in frequencies for word, _ in words)}

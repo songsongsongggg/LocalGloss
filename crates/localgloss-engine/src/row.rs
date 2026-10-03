@@ -1,6 +1,9 @@
 //! 候选显示行；仅包含当前组合所需的中文和英文释义。
 #[derive(Clone, Default)]
 pub struct Row {
+    /// 原样字母候选，不提供译词。
+    pub raw: bool,
+
     pub text: String,
 
     pub gloss: String,

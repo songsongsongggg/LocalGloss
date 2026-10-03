@@ -24,7 +24,8 @@ def prepare(root=ROOT, output=None):
     if hashlib.sha256(frequency_data).hexdigest() != FREQUENCY_EXPECTED:
         raise ValueError('jieba archive checksum mismatch')
     frequencies = parse_frequencies(gzip.decompress(frequency_data).decode('utf-8'))
-    dictionary, glossary, counts = convert(text, frequencies)
+    supplement = (root / 'assets/localgloss/common-phrases.tsv').read_bytes()
+    dictionary, glossary, counts = convert(text, frequencies, supplement.decode('utf-8'))
     if counts['dictionary_entries'] < 100000 or counts['glossary_words'] < 100000:
         raise ValueError('Unexpectedly small dictionary')
     files = {'dict.tsv': dictionary.encode(), 'glossary-en.tsv': glossary.encode()}
@@ -41,7 +42,9 @@ def prepare(root=ROOT, output=None):
             with path.open('xb') as target:
                 target.write(value)
     report = {'source': 'CC-CEDICT', 'source_date': '2026-09-27T12:50:23Z', 'source_sha256': EXPECTED,
-              'license': 'CC-BY-SA-4.0', 'ranking': {'source': 'jieba', 'license': 'MIT',
+              'license': 'CC-BY-SA-4.0', 'supplement': {'source': 'LocalGloss contributors',
+              'sha256': hashlib.sha256(supplement).hexdigest(), 'license': 'CC-BY-SA-4.0',
+              'fallback_weights': 'curated priorities, not measured frequencies'}, 'ranking': {'source': 'jieba', 'license': 'MIT',
               'commit': '67fa2e36e72f69d9134b8a1037b83fbb070b9775', 'source_sha256': FREQUENCY_EXPECTED,
               'unknown_word_weight': 1, 'personal_learning': False}, **counts,
               'sha256': {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}}

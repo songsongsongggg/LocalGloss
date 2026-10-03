@@ -196,4 +196,5 @@ fn input_limit_flushes_raw_without_swallowing_next_letter() {
 
 mod navigation;
 
+mod mixed;
 mod preferences;

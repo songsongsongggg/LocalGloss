@@ -1,4 +1,5 @@
 //! 固定装配只读词表；敏感状态和焦点边界不保留输入。
+mod mixed;
 mod preferences;
 mod tests;
 
@@ -109,6 +110,7 @@ impl OfflineEngine {
             .take(self.settings.page_size)
             .map(|candidate| Row {
                 text: candidate.text.clone(),
+                raw: candidate.kind == qingjian_core::CandidateKind::English,
                 primary_gloss: candidate
                     .translation
                     .as_ref()
@@ -345,6 +347,7 @@ impl OfflineEngine {
             self.candidates = query.candidates.items;
             self.annotate_manual_terms();
         }
+        self.insert_raw_candidate();
     }
 
     fn outcome(&self, handled: bool, commit: Option<String>) -> Outcome {

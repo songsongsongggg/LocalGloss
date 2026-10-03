@@ -10,10 +10,10 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FILES = [
     "Cargo.toml", "Cargo.lock", "Casks/localgloss.rb", "Casks/localgloss@alpha.rb", "LICENSE", "README.md", "NOTICE.md", "PRIVACY.md", "DATA-SOURCES.md",
-    "docs/user/guide.md", "docs/development.md", "docs/releasing.md", "docs/validation-0.2.0-beta.1.md", "docs/validation-0.2.0.md", "docs/validation-0.2.1.md", "docs/validation-0.3.0-alpha.2.md", "docs/validation-0.3.0-alpha.3.md", "docs/validation-0.3.0-alpha.4.md",
+    "docs/user/guide.md", "docs/development.md", "docs/releasing.md", "docs/validation-0.2.0-beta.1.md", "docs/validation-0.2.0.md", "docs/validation-0.2.1.md", "docs/validation-0.3.0-alpha.2.md", "docs/validation-0.3.0-alpha.3.md", "docs/validation-0.3.0-alpha.4.md", "docs/validation-0.3.0-alpha.5.md",
     "CONTRIBUTING.md", "SECURITY.md", "RELEASE-NOTES.md", "INSTALL.zh-CN.md",
     ".github/workflows/localgloss-ci.yml", ".github/ISSUE_TEMPLATE/localgloss-bug.yml", ".github/pull_request_template.md",
-    "assets/jieba/README.md", "assets/jieba/LICENSE.txt", "assets/jieba/dict.txt.gz",
+    "assets/localgloss/README.md", "assets/localgloss/common-phrases.tsv", "assets/jieba/README.md", "assets/jieba/LICENSE.txt", "assets/jieba/dict.txt.gz",
     "assets/cedict/README.md", "assets/cedict/LICENSE.txt", "assets/cedict/cedict-ts.txt.gz",
     "assets/licenses/README.md", "assets/licenses/objc2-LICENSE.md", "assets/licenses/objc2-core-LICENSE.md", "assets/licenses/objc2-encode-LICENSE.md", "assets/licenses/OpenCC-LICENSE.txt", "assets/licenses/Apache-2.0.txt", "assets/licenses/MIT.txt",
     "scripts/tests/test_cedict.py",
@@ -45,7 +45,7 @@ def main():
             if hashlib.sha256(path.read_bytes()).hexdigest() != archives[str(name)]:
                 raise SystemExit(f"Archive checksum mismatch: {name}")
             continue
-        if path.suffix not in {".rs", ".toml", ".lock", ".md", ".swift", ".sh", ".py", ".plist", ".strings", ".txt", ".yml", ".rb"} and path.name != "LICENSE":
+        if path.suffix not in {".rs", ".toml", ".lock", ".md", ".swift", ".sh", ".py", ".plist", ".strings", ".txt", ".yml", ".rb", ".tsv"} and path.name != "LICENSE":
             raise SystemExit(f"Unexpected file type: {name}")
         if path.stat().st_size > 1024 * 1024:
             raise SystemExit(f"Unexpected large file: {name}")

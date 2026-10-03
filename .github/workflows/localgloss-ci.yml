@@ -33,6 +33,7 @@ jobs:
           bash scripts/test-settings-integration.sh
           bash scripts/dev.sh cargo run --offline --locked -p localgloss-engine --example offline_check -- assets/cedict/generated
           bash scripts/dev.sh cargo run --offline --locked -p localgloss-engine --example ranking_check -- assets/cedict/generated
+          bash scripts/dev.sh cargo run --offline --locked -p localgloss-engine --example mixed_check -- assets/cedict/generated
           bash scripts/dev.sh cargo run --offline --locked --release -p localgloss-engine --example quality_check -- assets/cedict/generated crates/localgloss-engine/examples/fixtures/baseline.txt
           python3 scripts/verify-privacy.py
       - name: Build application icon
