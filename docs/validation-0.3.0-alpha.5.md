@@ -27,6 +27,16 @@
 
 ## 验证边界
 
-本地构建 source_dirty=true，仅作为本机待验收的开发包，不作为公开发行包。源数据和许可已纳入源码导出白名单，导出不会上传。旧生成词库与当前 alpha.4 应用已在项目内备份。
+早期原型构建 source_dirty=true，不作为公开发行包；最终发布使用 source_dirty=false 的干净源码构建。源数据和许可已纳入源码导出白名单，导出不会上传。旧生成词库与当前 alpha.4 应用已在项目内备份。
 
 发布前自动验证不包含安装后的系统输入法验收。真实 IMK 键盘、密码框、跨应用和完整动态隐私验收仍待安装后完成，不以编译、核心沙箱回放或结构检查替代。
+
+## 2026-10-04 发布与本机 Homebrew 安装
+
+- 发布源码提交 `11a232d3b0f28e34995fd2612fdcc3f4de21ba0a`；[GitHub CI 37150096927](https://github.com/songsongsongggg/LocalGloss/actions/runs/37150096927) 全部通过。
+- [v0.3.0-alpha.5](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0-alpha.5) 标为 Pre-release，5 个附件重下载与 SHA256SUMS、原始文件逐项一致；含依赖源码包在空 Cargo 缓存下离线编译检查通过。
+- Homebrew alpha cask 更新为 alpha.5，ZIP SHA-256 为 `2a9f290b3713a1d6f0672ade63f4248f7019b7203d29fec1d868f839debc06b5`。稳定版仍为 v0.2.0。
+- 本机通过公开 tap 下载并升级为 alpha.5 build 12。应用 152 个文件与公开构建清单完全匹配，签名校验通过；未安装 Test / Preview 工具。
+- 升级前保存 alpha.4 的完整应用备份，并只正常退出旧 LocalGloss。TIS 父输入源启用状态未恢复，切换返回 -50；在系统设置中仅移除并重新添加本地译词后，启用及选择成功，无需重新登录或重启。
+- 已确认新应用运行、LocalGloss 输入模式选中；使用实际安装词库的混输和译词回放在禁止网络、禁止文件写入的环境下通过。单次进程检查未观察到网络 socket，此结果不代表持续流量审计。
+- Homebrew 安装步骤不删除或修改个人 settings.json。真实物理键盘、密码框、跨应用和完整动态隐私验收仍待完成。
