@@ -110,3 +110,24 @@ assert(beforeLock == afterLock)
 flock(lockFD, LOCK_UN)
 close(lockFD)
 print("alpha2 tests passed: Tab-disabled preview, full-length preview, empty translation fallback, held-lock preservation")
+
+var selectionDraft = SettingsDraft(initial)
+assert(selectionDraft.visibleRow(for: "bb", matching: "second") == 0)
+assert(selectionDraft.visibleRow(for: "aa", matching: "second") == nil)
+assert(selectionDraft.visibleRow(for: "bb", matching: "") == 1)
+try selectionDraft.put(initial.terms[1], at: 1)
+assert(!selectionDraft.canUndo && !selectionDraft.isDirty)
+try selectionDraft.put(UserTerm(code: "cc", text: "丙", gloss: "third"), at: 1)
+assert(selectionDraft.visibleRow(for: "cc", matching: "") == 1)
+assert(selectionDraft.visibleRow(for: "bb", matching: "") == nil)
+selectionDraft.remove(at: 0)
+assert(selectionDraft.visibleRow(for: "cc", matching: "") == 0)
+print("selection tests passed: filtered row, hidden selection, renamed code, shifted index, no-op edit")
+
+// 仅供集成测试：向调用方新建的临时目录输出固定虚构配置。
+if CommandLine.arguments.count == 3 && CommandLine.arguments[1] == "--integration-output" {
+    let output = URL(fileURLWithPath: CommandLine.arguments[2], isDirectory: true)
+    var fixture = SettingsModel()
+    fixture.terms = [UserTerm(code: "ceshiya", text: "虚构验收词", gloss: "fictional acceptance term · complete")]
+    try fixture.save(to: output, expected: nil, checkConflict: true)
+}

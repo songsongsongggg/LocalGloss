@@ -10,7 +10,7 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FILES = [
     "Cargo.toml", "Cargo.lock", "LICENSE", "README.md", "NOTICE.md", "PRIVACY.md", "DATA-SOURCES.md",
-    "docs/user/guide.md", "docs/development.md", "docs/releasing.md", "docs/validation-0.2.0-beta.1.md", "docs/validation-0.2.0.md", "docs/validation-0.2.1.md", "docs/validation-0.3.0-alpha.2.md",
+    "docs/user/guide.md", "docs/development.md", "docs/releasing.md", "docs/validation-0.2.0-beta.1.md", "docs/validation-0.2.0.md", "docs/validation-0.2.1.md", "docs/validation-0.3.0-alpha.2.md", "docs/validation-0.3.0-alpha.3.md",
     "CONTRIBUTING.md", "SECURITY.md", "RELEASE-NOTES.md", "INSTALL.zh-CN.md",
     ".github/workflows/localgloss-ci.yml", ".github/ISSUE_TEMPLATE/localgloss-bug.yml", ".github/pull_request_template.md",
     "assets/jieba/README.md", "assets/jieba/LICENSE.txt", "assets/jieba/dict.txt.gz",
@@ -19,7 +19,7 @@ FILES = [
     "scripts/tests/test_cedict.py",
     "assets/lexicon/README.md", "assets/lexicon/00_meta/THUOCL_LICENSE.txt", "assets/glossary/README.md",
 ]
-SCRIPTS = ["dev.sh", "bundle-localgloss.sh", "build-settings.sh", "test-settings.sh", "make-menu-icon.py", "verify-privacy.py", "prepare-data.py", "export-source.py", "cedict.py", "prepare-release-data.py", "collect-notices.py", "package-release.py"]
+SCRIPTS = ["dev.sh", "bundle-localgloss.sh", "build-settings.sh", "test-settings.sh", "test-settings-integration.sh", "make-menu-icon.py", "verify-privacy.py", "prepare-data.py", "export-source.py", "cedict.py", "prepare-release-data.py", "collect-notices.py", "package-release.py"]
 DIRECTORIES = [
     "crates/qingjian-core", "crates/qingjian-dictionary", "crates/qingjian-translate", "crates/qingjian-format", "crates/localgloss-engine",
     "apps/localgloss-macos", "apps/localgloss-settings",

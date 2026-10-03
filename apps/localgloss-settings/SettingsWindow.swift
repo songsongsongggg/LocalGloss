@@ -11,6 +11,8 @@ final class SettingsWindow: NSObject, NSApplicationDelegate, NSWindowDelegate, N
     private let search = NSSearchField()
     private let table = NSTableView()
     private let status = NSTextField(wrappingLabelWithString: "")
+    private var selectedCode: String?
+    private let emptyState = NSTextField(labelWithString: "")
     private let summary = NSTextField(labelWithString: "")
     private var draft = SettingsDraft()
     private var baseline: Data?
@@ -71,6 +73,8 @@ final class SettingsWindow: NSObject, NSApplicationDelegate, NSWindowDelegate, N
         table.setAccessibilityLabel("主动词条列表")
         scroll.documentView = table
         window.contentView!.addSubview(scroll)
+        emptyState.alignment = .center
+        add(emptyState, NSRect(x: 40, y: 300, width: 710, height: 28))
         _ = button("新增", #selector(addTerm), x: 24, y: 122)
         editButton = button("编辑", #selector(editTerm), x: 130, y: 122)
         deleteButton = button("删除", #selector(deleteTerm), x: 236, y: 122)
@@ -101,7 +105,7 @@ final class SettingsWindow: NSObject, NSApplicationDelegate, NSWindowDelegate, N
             if !previewOnly {
                 guard before == (try SettingsModel.snapshot()) else { throw ValidationError.invalid("加载期间设置发生变化，请重新加载。") }
             }
-            baseline = before; draft = SettingsDraft(model); loaded = true
+            baseline = before; draft = SettingsDraft(model); selectedCode = nil; loaded = true
             font.selectItem(withTitle: String(model.font_size)); count.selectItem(withTitle: String(model.page_size))
             tab.state = model.tab_translation ? .on : .off
             paging.state = model.symbol_paging ? .on : .off
@@ -112,8 +116,15 @@ final class SettingsWindow: NSObject, NSApplicationDelegate, NSWindowDelegate, N
         refresh()
     }
     private func refresh() {
+        let code = selectedCode
         visible = draft.indices(matching: search.stringValue)
         table.deselectAll(nil); table.reloadData()
+        if let row = draft.visibleRow(for: code, matching: search.stringValue) {
+            table.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
+            table.scrollRowToVisible(row)
+        }
+        emptyState.stringValue = draft.model.terms.isEmpty ? "尚无词条，点击「新增」添加。" : "没有匹配词条，请调整或清除搜索。"
+        emptyState.isHidden = !visible.isEmpty
         summary.stringValue = "主动词条 \(visible.count) / \(draft.model.terms.count)（最多 500）\(draft.isDirty ? " · 未保存" : "")"
         window.isDocumentEdited = draft.isDirty
         saveButton.isEnabled = loaded && draft.isDirty && !previewOnly
@@ -132,6 +143,7 @@ final class SettingsWindow: NSObject, NSApplicationDelegate, NSWindowDelegate, N
         return cell
     }
     func tableViewSelectionDidChange(_ notification: Notification) {
+        selectedCode = selectedIndex.map { draft.model.terms[$0].code }
         editButton.isEnabled = loaded && selectedIndex != nil
         deleteButton.isEnabled = loaded && selectedIndex != nil
     }
@@ -151,7 +163,12 @@ final class SettingsWindow: NSObject, NSApplicationDelegate, NSWindowDelegate, N
         let used = Set(draft.model.terms.enumerated().filter { $0.offset != index }.map { $0.element.code })
         let editor = TermEditor(term: index.map { draft.model.terms[$0] }, usedCodes: used, tabTranslation: draft.model.tab_translation)
         guard let term = editor.run() else { return }
-        do { try draft.put(term, at: index); refresh() }
+        do {
+            try draft.put(term, at: index)
+            selectedCode = term.code
+            refresh()
+            if selectedIndex == nil { status.stringValue = "词条已加入草稿；当前搜索条件隐藏了该词条，清除搜索可查看。" }
+        }
         catch { status.stringValue = error.localizedDescription }
     }
     @objc private func addTerm() { edit(at: nil) }

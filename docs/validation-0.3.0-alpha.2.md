@@ -15,3 +15,12 @@
 完整包：`dist/20261002T190936Z/LocalGloss.app`（目录采用 UTC 时间）；隔离预览：`target/preview-0.3.0-alpha.2/LocalGlossPreview.app`。日志：`target/validation-0.3.0-alpha.2/`。
 
 专用实际输入测试窗口连接返回 timeoutReached；隔离预览的取消操作之后，观察返回 ScreenCaptureKit -3812。未用这些工具错误判定产品失败，也未把真实按键、密码框、跨应用或完整动态隐私验收标为通过。本轮未访问个人设置或剪贴板内容，未退出现用输入法。后续继续对已安装版本做实际输入验收，alpha.2 替换须取得当次退出与安装确认。
+
+## 公开发布结果（2026-10-03，北京时间）
+
+- 已发布 GitHub Pre-release v0.3.0-alpha.2，发布时间 2026-10-03 03:51:43 +08:00；对应公开源码提交 ac6636a4d55de328c057a48f185a30550e55be56。
+- 精确提交 CI 全部成功：https://github.com/songsongsongggg/LocalGloss/actions/runs/37056515854 。
+- 从干净公开 checkout 重建应用、生成应用 ZIP 与含依赖源码归档；ZIP 解压签名和 148 个文件哈希通过，源码归档解压后 cargo check --offline --locked --workspace 通过。
+- 五个 GitHub 附件重新下载后 SHA-256 与本地原件逐一相同；API 确认 draft=false、prerelease=true，最新稳定版仍为 v0.2.0。
+- 发布页：https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0-alpha.2 。仅发布测试渠道，前文未完成的动态验收限制仍有效。本机未替换，仍为 alpha.1。
+- 发布证据与下载回验位于 target/public-source/target/release-validation-030a2 和 target/public-source/target/download-verify-030a2。后续方案见 design/localgloss-next-iteration.md。

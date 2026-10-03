@@ -23,6 +23,11 @@ struct SettingsDraft {
         }
     }
 
+    func visibleRow(for code: String?, matching query: String) -> Int? {
+        guard let code else { return nil }
+        return indices(matching: query).firstIndex { model.terms[$0].code == code }
+    }
+
     mutating func put(_ term: UserTerm, at index: Int?) throws {
         var next = model
         if let index {
@@ -30,6 +35,7 @@ struct SettingsDraft {
             next.terms[index] = term
         } else { next.terms.append(term) }
         try next.validate()
+        guard next != model else { return }
         if undoTerms.count >= 100 { undoTerms.removeFirst() }
         undoTerms.append(model.terms)
         model = next
