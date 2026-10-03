@@ -22,7 +22,7 @@ brew install --cask songsongsongggg/localgloss/localgloss
 brew install --cask songsongsongggg/localgloss/localgloss@alpha
 ```
 
-当前测试版为 v0.3.0-alpha.4，下载 ZIP 也可手动安装。Homebrew 安装不替代系统输入源添加，不绕过 Gatekeeper。升级前保存工作、结束组合并切到系统输入源，备份应用，由使用者退出旧输入法后再执行 `brew upgrade --cask songsongsongggg/localgloss/localgloss@alpha`。
+当前测试版为 v0.3.0-alpha.5，下载 ZIP 也可手动安装。Homebrew 安装不替代系统输入源添加，不绕过 Gatekeeper。升级前保存工作、结束组合并切到系统输入源，备份应用，由使用者退出旧输入法后再执行 `brew upgrade --cask songsongsongggg/localgloss/localgloss@alpha`。
 
 从手动安装转为 Homebrew 时，先完成上述备份与退出，再将旧应用移到备份目录；不要使用 `--force` 覆盖运行中的输入法。已有相同版本也可在确认文件一致后用 `--adopt` 接管。卸载使用对应的 `brew uninstall --cask`，不删除个人设置；切换渠道应先卸载原渠道。
 
