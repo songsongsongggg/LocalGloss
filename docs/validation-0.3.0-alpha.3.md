@@ -1,6 +1,6 @@
 # v0.3.0-alpha.3 开发验证
 
-日期：2026-10-03。build 10。本地构建，未安装、提交、推送或发布。
+日期：2026-10-03。build 10。已按用户授权安装并发布 GitHub 测试版；以下开发阶段未测项以末尾补充记录为准。
 
 ## 变更
 
@@ -22,3 +22,19 @@
 完整包：`dist/20261003T073338Z/LocalGloss.app`。日志：`target/validation-0.3.0-alpha.3/`。隔离预览：`target/preview-0.3.0-alpha.3/LocalGlossPreview.app`。
 
 下一步复测编辑后选中与空结果提示，并完成 GUI 保存、实际 IMK 输入、密码框及跨应用验证。集成测试不访问个人设置，但不包含真实键盘或实际输入框。当前 GitHub 发布未作变更，现用输入法未退出或替换。
+
+## 安装与发布补充验收（2026-10-03）
+
+隔离 GUI 本次连接成功，已确认搜索 zzzzzz 显示无匹配提示、清除恢复两条、ceshi 改码 ceshix 后正确保持该行选中，撤销恢复原值。这些操作不保存个人词条。真实 IMK、密码框与跨应用仍未完成，不能用隔离编辑器验收代替。
+
+公开源码提交 ba1106c54c12c8738364ae3d69149af22d8b5840 的 CI 37108672960 全部通过。干净 checkout 生成安装包和含依赖源码包；ZIP 解压签名与清单校验通过，源码归档解压后离线 cargo check --workspace 通过。
+
+同一公开构建已安装为 alpha.3 build 10，精确退出旧输入法 PID 33660 后启动新 PID 59034，路径核验通过。注册、启用和选择均返回 0，个人设置未读写。alpha.1 的备份、替换源及校验状态保存在 target/validation-0.3.0-alpha.3/upgrade-ready.json。
+
+发布页：https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0-alpha.3 。发布类型为预发布，不提升稳定渠道。
+
+发布后回验：2026-10-03 17:37:15 +08:00 发布，API 确认 draft=false、prerelease=true，稳定版仍为 v0.2.0。五个附件重新下载后 SHA-256 与本地产物逐项一致；本机安装的 148 个文件与下载构建清单一致。证据目录：target/public-source/target/download-verify-030a3。此前自动审批用量故障已在用户要求继续后重试成功，发布未绕过审批。
+
+## 安装后复测（2026-10-03）
+
+再次核对已安装 alpha.3 build 10，148 个文件匹配下载清单，精确路径进程 PID 59034 存在。开始时当前输入源为 ABC；选择 LocalGloss 返回 0 并读回已选中。专用测试窗口两次连接 timeoutReached，未发送自动按键。安装词表 181 组回放无退化，offline_check 通过；这些引擎结果不能替代真实输入、焦点和密码框验收。此次未重复安装、未退出应用、未读取个人词条或剪贴板内容。回放日志位于 target/acceptance-alpha3-installed/。

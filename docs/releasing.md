@@ -29,3 +29,9 @@ python3 scripts/package-release.py dist/<时间戳>/LocalGloss.app target/releas
 5. 发现问题发新版本，不覆盖旧标签或静默替换旧附件。
 
 开发签名尚未公证，必须在下载页面清楚说明。发布说明须区分用户实际使用反馈、自动检查和未完成项，后续继续补全跨应用与隐私动态验收。
+
+## Homebrew 渠道
+
+仓库的 `Casks/` 作为自定义 tap；使用显式仓库 URL，无需额外 GitHub 仓库。`localgloss` 只指向稳定版，`localgloss@alpha` 指向最新公开测试版。发布并重新下载校验附件后，才更新对应 cask 的 version 与 sha256；此提交可以晚于应用标签，避免包哈希与源码包互相引用。
+
+Cask 使用 `input_method` artifact，不执行第三方安装脚本，不绕过隔离属性，不关闭应用，不删除 settings.json。用独立的 `--input-methoddir` 测试安装与卸载，避免碰个人输入法；发布后验证 `brew info`、SHA-256 与应用文件清单。

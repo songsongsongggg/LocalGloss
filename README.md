@@ -2,11 +2,22 @@
 
 LocalGloss 是面向 macOS 的离线拼音输入法。输入中文拼音时，候选旁显示英文译词；按 Tab 可直接输入译词，无需复制粘贴。
 
-**当前稳定版为 v0.2.0；测试版为 v0.3.0-alpha.3。** [下载应用与源码](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.2.0) · [安装与回退](INSTALL.zh-CN.md) · [验证记录](docs/validation-0.2.0.md)
+**当前稳定版为 v0.2.0；测试版为 v0.3.0-alpha.4。** [下载应用与源码](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.2.0) · [安装与回退](INSTALL.zh-CN.md) · [验证记录](docs/validation-0.2.0.md)
 
 仅提供 Apple Silicon、macOS 13+ 构建。ZIP 内已包含开放词库，解压后按安装说明添加输入源。本机用户已确认常见输入和候选排序可用；尚未覆盖所有应用与系统版本。应用仍采用 ad-hoc 签名，未做 Developer ID 签名与公证。
 
-[下载 v0.3.0-alpha.3 测试版](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0-alpha.3)：增加可搜索词条编辑器与草稿保护，适合愿意反馈问题的使用者。完整 IMK、密码框和跨应用验收尚未完成；日常使用仍可选择稳定版。
+[下载 v0.3.0-alpha.4 测试版](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0-alpha.4)：增加可搜索词条编辑器与草稿保护，适合愿意反馈问题的使用者。完整 IMK、密码框和跨应用验收尚未完成；日常使用仍可选择稳定版。
+
+## Homebrew 安装
+
+提供项目维护的自定义 tap，当前图标与词条编辑器在 alpha 渠道；稳定渠道仍为 v0.2.0。
+
+```sh
+brew tap songsongsongggg/localgloss https://github.com/songsongsongggg/LocalGloss
+brew install --cask songsongsongggg/localgloss/localgloss@alpha
+```
+
+稳定版使用 `brew install --cask songsongsongggg/localgloss/localgloss`。两种渠道不可同时安装。安装后仍需在系统设置添加「本地译词」输入源；已有手动安装版本请先按 [升级说明](INSTALL.zh-CN.md) 备份并退出旧输入法，避免覆盖正在运行的程序。
 
 ## 功能
 

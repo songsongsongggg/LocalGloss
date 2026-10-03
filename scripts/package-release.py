@@ -46,6 +46,13 @@ def main():
             raise SystemExit('Build contains a local user path')
     if plistlib.loads((app / 'Contents/Info.plist').read_bytes())['LocalGlossRelease'] != version:
         raise SystemExit('Version mismatch')
+    for bundle in [app, app / 'Contents/Resources/LocalGloss Settings.app']:
+        info = plistlib.loads((bundle / 'Contents/Info.plist').read_bytes())
+        icon = bundle / 'Contents/Resources' / info.get('CFBundleIconFile', '')
+        if not icon.is_file() or icon.read_bytes()[:4] != b'icns':
+            raise SystemExit('Missing or invalid application icon')
+        if info['LocalGlossRelease'] != version or info.get('LocalGlossPreview'):
+            raise SystemExit('Unexpected preview or settings version')
     subprocess.run(['/usr/bin/codesign', '--verify', '--deep', '--strict', str(app)], check=True)
     output.mkdir(parents=True)
     name = f'LocalGloss-v{version}-macOS-arm64'
