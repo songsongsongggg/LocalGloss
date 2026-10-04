@@ -2,22 +2,22 @@
 
 LocalGloss 是面向 macOS 的离线拼音输入法。输入中文拼音时，候选旁显示英文译词；按 Tab 可直接输入译词，无需复制粘贴。
 
-**当前稳定版为 v0.2.0；测试版为 v0.3.0-alpha.5。** [下载应用与源码](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.2.0) · [安装与回退](INSTALL.zh-CN.md) · [验证记录](docs/validation-0.2.0.md)
+**当前稳定版为 v0.3.0；历史测试版为 v0.3.0-alpha.5。** [下载应用与源码](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0) · [安装与回退](INSTALL.zh-CN.md) · [验证记录](docs/validation-0.3.0.md)
 
 仅提供 Apple Silicon、macOS 13+ 构建。ZIP 内已包含开放词库，解压后按安装说明添加输入源。本机用户已确认常见输入和候选排序可用；尚未覆盖所有应用与系统版本。应用仍采用 ad-hoc 签名，未做 Developer ID 签名与公证。
 
-[下载 v0.3.0-alpha.5 测试版](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0-alpha.5)：采用 Rime 中文候选词库，补齐常见组合，并提供原样英文候选；保留可搜索词条编辑器与草稿保护。完整 IMK、密码框和跨应用验收尚未完成；日常使用仍可选择稳定版。
+v0.3.0 采用 Rime 中文候选与静态权重，提供原样英文候选和词条编辑器。已完成原生输入框、独立应用切换及标准密码框的限定自动验收；浏览器按键注入未能经过系统输入法，浏览器专项与完整动态隐私审计仍待补充。
 
 ## Homebrew 安装
 
-提供项目维护的自定义 tap，当前 Rime 词库与中英混输改进在 alpha 渠道；稳定渠道仍为 v0.2.0。
+提供项目维护的自定义 tap，稳定渠道 `localgloss` 为 v0.3.0；历史预发布渠道 `localgloss@alpha` 保留 alpha.5。
 
 ```sh
 brew tap songsongsongggg/localgloss https://github.com/songsongsongggg/LocalGloss
-brew install --cask songsongsongggg/localgloss/localgloss@alpha
+brew install --cask songsongsongggg/localgloss/localgloss
 ```
 
-稳定版使用 `brew install --cask songsongsongggg/localgloss/localgloss`。两种渠道不可同时安装。安装后仍需在系统设置添加「本地译词」输入源；已有手动安装版本请先按 [升级说明](INSTALL.zh-CN.md) 备份并退出旧输入法，避免覆盖正在运行的程序。
+历史测试版使用 `brew install --cask songsongsongggg/localgloss/localgloss@alpha`。两种渠道不可同时安装。安装后仍需在系统设置添加「本地译词」输入源；已有手动安装版本请先按 [升级说明](INSTALL.zh-CN.md) 备份并退出旧输入法，避免覆盖正在运行的程序。
 
 ## 功能
 
@@ -59,6 +59,6 @@ python3 scripts/verify-privacy.py
 
 本项目派生自 [青简](https://github.com/qingjian-team/qingjian) 的离线核心，沿用 **GPL-3.0-or-later**。macOS 外壳、离线装配及设置应用为 LocalGloss 的独立修改，详见 [NOTICE](NOTICE.md)。
 
-发布数据采用 CC-CEDICT，原始快照和派生 TSV 按 CC BY-SA 4.0 分发；静态词频来自 MIT 许可的 jieba，保留独立声明；代码与数据许可分开保留。不会上传个人设置、主动词条或本机开发记录。
+中文候选采用 Apache-2.0 许可的 Rime pinyin-simp；CC-CEDICT 释义与低权重补充按 CC BY-SA 4.0 分发，各来源保留独立声明；代码与数据许可分开保留。不会上传个人设置、主动词条或本机开发记录。
 
 欢迎按 [贡献指南](CONTRIBUTING.md) 提交问题和 PR；安全反馈见 [SECURITY.md](SECURITY.md)。

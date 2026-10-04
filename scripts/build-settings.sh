@@ -16,7 +16,7 @@ xcrun swiftc -O -file-prefix-map "$LOCALGLOSS_ROOT=." -debug-prefix-map "$LOCALG
 python3 - "$LOCALGLOSS_SETTINGS_APP" <<'PY'
 import plistlib,pathlib,sys,os
 p=pathlib.Path(sys.argv[1])/'Contents/Info.plist'
-info={'CFBundleIdentifier':'local.localgloss.settings','CFBundleName':'LocalGloss Settings','CFBundleDisplayName':'LocalGloss 设置','CFBundleExecutable':'localgloss-settings','CFBundlePackageType':'APPL','CFBundleVersion':'12','CFBundleIconFile':'LocalGloss.icns','LocalGlossRelease':'0.3.0-alpha.5','CFBundleShortVersionString':'0.3.0','LSMinimumSystemVersion':'13.0','NSPrincipalClass':'NSApplication'}
+info={'CFBundleIdentifier':'local.localgloss.settings','CFBundleName':'LocalGloss Settings','CFBundleDisplayName':'LocalGloss 设置','CFBundleExecutable':'localgloss-settings','CFBundlePackageType':'APPL','CFBundleVersion':'13','CFBundleIconFile':'LocalGloss.icns','LocalGlossRelease':'0.3.0','CFBundleShortVersionString':'0.3.0','LSMinimumSystemVersion':'13.0','NSPrincipalClass':'NSApplication'}
 if os.environ.get('LOCALGLOSS_SETTINGS_PREVIEW') == '1':
     info.update(CFBundleIdentifier='local.localgloss.settings.preview', LocalGlossPreview=True, CFBundleDisplayName='LocalGloss 词条预览')
 p.write_bytes(plistlib.dumps(info))

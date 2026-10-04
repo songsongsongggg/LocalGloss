@@ -10,7 +10,7 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FILES = [
     "Cargo.toml", "Cargo.lock", "Casks/localgloss.rb", "Casks/localgloss@alpha.rb", "LICENSE", "README.md", "NOTICE.md", "PRIVACY.md", "DATA-SOURCES.md",
-    "docs/user/guide.md", "docs/development.md", "docs/releasing.md", "docs/validation-0.2.0-beta.1.md", "docs/validation-0.2.0.md", "docs/validation-0.2.1.md", "docs/validation-0.3.0-alpha.2.md", "docs/validation-0.3.0-alpha.3.md", "docs/validation-0.3.0-alpha.4.md", "docs/validation-0.3.0-alpha.5.md",
+    "docs/user/guide.md", "docs/development.md", "docs/releasing.md", "docs/validation-0.2.0-beta.1.md", "docs/validation-0.2.0.md", "docs/validation-0.2.1.md", "docs/validation-0.3.0-alpha.2.md", "docs/validation-0.3.0-alpha.3.md", "docs/validation-0.3.0-alpha.4.md", "docs/validation-0.3.0-alpha.5.md", "docs/validation-0.3.0.md",
     "CONTRIBUTING.md", "SECURITY.md", "RELEASE-NOTES.md", "INSTALL.zh-CN.md",
     ".github/workflows/localgloss-ci.yml", ".github/ISSUE_TEMPLATE/localgloss-bug.yml", ".github/pull_request_template.md",
     "assets/localgloss/README.md", "assets/localgloss/common-phrases.tsv", "assets/jieba/README.md", "assets/jieba/LICENSE.txt", "assets/jieba/dict.txt.gz",

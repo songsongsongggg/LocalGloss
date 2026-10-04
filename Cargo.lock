@@ -324,7 +324,7 @@ dependencies = [
 
 [[package]]
 name = "localgloss-macos"
-version = "0.3.0-alpha.5"
+version = "0.3.0"
 dependencies = [
  "localgloss-engine",
  "objc2",
