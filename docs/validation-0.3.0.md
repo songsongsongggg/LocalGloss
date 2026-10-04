@@ -28,3 +28,11 @@
 沿用 alpha.5 的冻结 181 组样例，不更改样例或基线。正式版本重新运行：371 项 Rust、16 项 Python、Swift 集成、fmt / clippy 和结构性隐私检查通过；181 组候选 174 组首选、181 组前三，4 组同音词顺序下降仍在前三。混输和译词回放在禁止联网及文件写入的核心沙箱中通过。GitHub CI 随发布源码核对。对下载包检查干净源码、版本、签名、文件清单和重新下载 SHA-256。
 
 没有发现本次限定验收范围内的稳定发布阻断问题。发布范围为 Apple Silicon / macOS 13+；不对所有应用、系统版本或已审计安全保证作承诺。
+
+## 发布后核对
+
+- [源码 CI 37190328002](https://github.com/songsongsongggg/LocalGloss/actions/runs/37190328002) 全部通过，提交为 `98a97c342c38864a9f6376a73b5f55c01aa128bf`。
+- [v0.3.0 正式 Release](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0) 的 5 个附件重下载，逐项哈希与原始发行包一致。
+- 正式 ZIP 内 152 个文件与构建清单一致，build 13、arm64、签名和内置词库校验通过；含依赖源码包在空 Cargo 缓存下离线编译检查通过。
+- Homebrew `localgloss` 更新为 v0.3.0，ZIP SHA-256 为 `5295153de4f20e09dc602cc3b3feda4c143be39d8ca4f28144c6a911a53e64d8`；历史 `localgloss@alpha` 保留 alpha.5。
+- 本轮未替换本机已经通过真实 IMK 自动验收的 alpha.5；本机切换稳定渠道需要备份、正常退出旧输入法并卸载 alpha cask 后再安装。
