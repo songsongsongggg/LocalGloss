@@ -1,12 +1,14 @@
 # LocalGloss 安装与回退
 
-这是稳定版，仅提供 Apple Silicon（M1 及后续）macOS 13+ 构建。已完成自动检查及原生输入框、独立应用切换与标准密码框的限定自动验收；尚未逐一验证所有 macOS 版本与应用。Intel Mac 暂无安装包。
+稳定渠道为 v0.3.0；本说明也适用于 v0.4.0-beta.1 测试版。仅提供 Apple Silicon（M1 及后续）macOS 13+ 构建。已完成自动检查及原生输入框、独立应用切换与标准密码框的限定自动验收；尚未逐一验证所有 macOS 版本与应用。Intel Mac 暂无安装包。
 
 ## 下载和校验
 
 从 https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0 下载 `LocalGloss-v0.3.0-macOS-arm64.zip` 和 `SHA256SUMS`。
 
 在终端进入下载目录，运行 `shasum -a 256 LocalGloss-v0.3.0-macOS-arm64.zip`，比较结果与 SHA256SUMS 中对应行。校验值用于检查文件是否一致；它不替代开发者身份签名。
+
+v0.4.0-beta.1 发布后，从对应 Release 下载 `LocalGloss-v0.4.0-beta.1-macOS-arm64.zip`，运行 `shasum -a 256 LocalGloss-v0.4.0-beta.1-macOS-arm64.zip` 与该版 `SHA256SUMS` 比较，不使用 v0.3.0 的校验值。新版添加词条导入/导出，设置格式兼容 v0.3.0；升级前仍须备份应用并正常退出旧输入法。
 
 下载包已内置开放词库，使用时不需要联网、模型账户或 API Key。解压后可看到 LocalGloss.app。
 
@@ -22,7 +24,7 @@ brew install --cask songsongsongggg/localgloss/localgloss
 brew install --cask songsongsongggg/localgloss/localgloss@alpha
 ```
 
-当前测试版为 v0.3.0-alpha.5，下载 ZIP 也可手动安装。Homebrew 安装不替代系统输入源添加，不绕过 Gatekeeper。升级前保存工作、结束组合并切到系统输入源，备份应用，由使用者退出旧输入法后再执行 `brew upgrade --cask songsongsongggg/localgloss/localgloss`。
+测试渠道在 v0.4.0-beta.1 发布并校验附件后更新；更新前仍为 v0.3.0-alpha.5。下载 ZIP 也可手动安装。Homebrew 安装不替代系统输入源添加，不绕过 Gatekeeper。升级前保存工作、结束组合并切到系统输入源，备份应用，由使用者退出旧输入法后再执行 `brew upgrade --cask songsongsongggg/localgloss/localgloss`。
 
 从手动安装转为 Homebrew 时，先完成上述备份与退出，再将旧应用移到备份目录；不要使用 `--force` 覆盖运行中的输入法。已有相同版本也可在确认文件一致后用 `--adopt` 接管。卸载使用对应的 `brew uninstall --cask`，不删除个人设置；从 alpha 切到稳定渠道时，先备份并正常退出旧输入法，再卸载 `localgloss@alpha`，安装 `localgloss`，不要使用强制覆盖。
 
