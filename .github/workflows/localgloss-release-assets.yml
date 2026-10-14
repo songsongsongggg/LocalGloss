@@ -1,0 +1,55 @@
+name: LocalGloss release assets
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing beta tag with a verified CI commit
+        required: true
+        type: string
+permissions:
+  contents: write
+concurrency:
+  group: localgloss-release-assets-${{ inputs.tag }}
+  cancel-in-progress: false
+jobs:
+  assets:
+    runs-on: macos-14
+    timeout-minutes: 25
+    env:
+      RELEASE_TAG: ${{ inputs.tag }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ inputs.tag }}
+          persist-credentials: false
+      - name: Verify beta draft and exact commit CI
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-beta\.[0-9]+$ ]]
+          gh release view "$RELEASE_TAG" --json isDraft,isPrerelease > "$RUNNER_TEMP/release.json"
+          gh run list --workflow localgloss-ci.yml --commit "$(git rev-parse HEAD)" --limit 20 --json status,conclusion > "$RUNNER_TEMP/ci.json"
+          python3 - <<'PY'
+          import json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])
+          release = json.loads((root/'release.json').read_text())
+          assert release['isDraft'] and release['isPrerelease']
+          runs = json.loads((root/'ci.json').read_text())
+          assert any(r['status']=='completed' and r['conclusion']=='success' for r in runs)
+          PY
+      - name: Build and package tagged source
+        run: |
+          set -euo pipefail
+          rustup toolchain install 1.98.1 --profile minimal --component rustfmt --component clippy
+          bash scripts/dev.sh cargo fetch --locked
+          bash scripts/dev.sh bundle
+          APP=$(find dist -maxdepth 2 -name LocalGloss.app -type d)
+          test -n "$APP"
+          python3 scripts/package-release.py "$APP" target/release-assets
+      - name: Upload into draft only
+        run: |
+          set -euo pipefail
+          gh release view "$RELEASE_TAG" --json isDraft --jq .isDraft | grep -qx true
+          gh release upload "$RELEASE_TAG" target/release-assets/*.zip target/release-assets/*.tar.gz target/release-assets/build-manifest.json target/release-assets/INSTALL.zh-CN.md target/release-assets/SHA256SUMS --clobber
+          # Leave draft publication and Homebrew update to verified download acceptance.
