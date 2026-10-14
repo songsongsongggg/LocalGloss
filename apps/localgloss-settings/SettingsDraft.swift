@@ -51,4 +51,12 @@ struct SettingsDraft {
     mutating func undo() {
         if let previous = undoTerms.popLast() { model.terms = previous }
     }
+
+    mutating func merge(_ exchange: TermsExchange, replacing codes: Set<String>) throws {
+        let next = try exchange.merged(with: model, replacing: codes)
+        guard next != model else { return }
+        if undoTerms.count >= 100 { undoTerms.removeFirst() }
+        undoTerms.append(model.terms)
+        model = next
+    }
 }

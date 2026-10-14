@@ -26,14 +26,22 @@ assert 'engine.set_private(true)' in engine
 assert 'engine.set_learning(false)' in engine
 manifest=(ROOT/'Cargo.toml').read_text()
 assert '"max_level_off"' in manifest and '"release_max_level_off"' in manifest
-# 设置编辑器只允许模型文件执行主动保存；禁止网络、剪贴板与输入监控接口。
+# 设置模型主动保存、词条交换主动导出；禁止网络、剪贴板与输入监控接口。
 settings_sources=list((ROOT/'apps/localgloss-settings').glob('*.swift'))
 for path in settings_sources:
     text=path.read_text()
     assert not re.search(r'URLSession|NSPasteboard|CGEventTap|AXUIElement|addGlobalMonitor',text), path.name
-    if path.name != 'SettingsModel.swift':
+    if path.name == 'TermsExchange.swift':
+        assert text.count('Darwin.write(') == 1, path.name
+        assert text.count('.write(') == 1, path.name
+        for contract in ['func exportNew(to url: URL)', 'O_NOFOLLOW', 'O_EXCL', 'fchmod(fd, 0o600)', 'linkat(directory, temporary, directory, name, 0)']:
+            assert contract in text, contract
+        assert 'rename' not in text, path.name
+    elif path.name != 'SettingsModel.swift':
         assert '.write(' not in text, path.name
 # 用户设置保存仅由 saveSettings 显式触发。
 assert 'try model.save(expected: baseline, checkConflict: true)' in (ROOT/'apps/localgloss-settings/SettingsWindow.swift').read_text()
+window=(ROOT/'apps/localgloss-settings/SettingsWindow.swift').read_text()
+assert '#selector(exportTerms)' in window and 'try TermsExchange(terms: draft.model.terms).exportNew(to: url)' in window
 print(f'privacy structure checks passed: {len(packages)} runtime packages, {len(sources)} source files')
 print('pending: installed IMK network, filesystem, clipboard, password-field and focus checks')

@@ -37,7 +37,7 @@ bash scripts/build-settings.sh "$LOCALGLOSS_APP/Contents/Resources/LocalGloss Se
 /usr/bin/codesign --sign - "$LOCALGLOSS_APP"
 /usr/bin/codesign --verify --deep --strict "$LOCALGLOSS_APP"
 python3 - "$LOCALGLOSS_APP" <<'PY'
-import hashlib, json, pathlib, subprocess, sys
+import hashlib, json, pathlib, plistlib, subprocess, sys
 app=pathlib.Path(sys.argv[1])
 files={str(path.relative_to(app)):hashlib.sha256(path.read_bytes()).hexdigest()
        for path in app.rglob('*') if path.is_file()}
@@ -47,7 +47,7 @@ revision=revision_file.read_text().strip() if revision_file.exists() else subpro
 dirty=None if revision_file.exists() else bool(subprocess.check_output(['git','status','--porcelain']))
 report={'product':'LocalGloss','upstream_commit':'f7abaefcb1a3aeaca5c01692941a64a7b1f43eb5',
         'source_commit':revision,
-        'release':'0.3.0', 'architecture':'arm64', 'source_dirty':dirty,
+        'release':plistlib.loads((app/'Contents/Info.plist').read_bytes())['LocalGlossRelease'], 'architecture':'arm64', 'source_dirty':dirty,
         'signing':'ad-hoc; no Developer ID; not notarized','installed':False,'files':files}
 (app.parent/'build-manifest.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 print('app:',app)

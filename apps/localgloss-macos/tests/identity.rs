@@ -4,6 +4,14 @@ fn identity_and_modes_are_consistent() {
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("Info.plist");
     let value = plist::Value::from_file(path).unwrap();
     let dict = value.as_dictionary().unwrap();
+    assert_eq!(
+        dict["LocalGlossRelease"].as_string(),
+        Some(env!("CARGO_PKG_VERSION"))
+    );
+    assert_eq!(
+        dict["CFBundleShortVersionString"].as_string(),
+        Some(env!("CARGO_PKG_VERSION"))
+    );
     let id = dict["CFBundleIdentifier"].as_string().unwrap();
     assert_eq!(id, "local.localgloss.inputmethod");
     assert_eq!(dict["TISInputSourceID"].as_string().unwrap(), id);

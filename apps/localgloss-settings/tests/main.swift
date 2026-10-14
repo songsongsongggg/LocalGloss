@@ -2,6 +2,7 @@
 import Foundation
 import Darwin
 umask(0o077)
+try testExchange()
 let directory = FileManager.default.temporaryDirectory.appendingPathComponent("localgloss-settings-test-" + UUID().uuidString)
 var model = SettingsModel()
 model.terms = [UserTerm(code: "kf", text: "开发", gloss: "develop")]
