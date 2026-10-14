@@ -2,9 +2,9 @@
 
 LocalGloss 是面向 macOS 的离线拼音输入法。输入中文拼音时，候选旁显示英文译词；按 Tab 可直接输入译词，无需复制粘贴。
 
-**当前稳定版为 v0.3.0；历史测试版为 v0.3.0-alpha.5。** [下载应用与源码](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0) · [安装与回退](INSTALL.zh-CN.md) · [验证记录](docs/validation-0.3.0.md)
+**当前稳定版为 v0.3.0；测试版为 v0.4.0-beta.1。** [下载应用与源码](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.3.0) · [安装与回退](INSTALL.zh-CN.md) · [验证记录](docs/validation-0.3.0.md)
 
-源码正在准备 v0.4.0-beta.1，新增离线词条导入、冲突合并及导出。尚未公开发布，稳定安装与 Homebrew 渠道保持原版本；新增操作与验收范围见 [用户说明](docs/user/guide.md) 和 [开发预览验证](docs/validation-0.4.0-dev.md)。
+[v0.4.0-beta.1 测试版](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.4.0-beta.1) 已发布，新增离线词条导入、冲突合并及导出。稳定渠道仍是 v0.3.0；操作与验收范围见 [用户说明](docs/user/guide.md) 和 [版本验证](docs/validation-0.4.0-dev.md)。
 
 仅提供 Apple Silicon、macOS 13+ 构建。ZIP 内已包含开放词库，解压后按安装说明添加输入源。本机用户已确认常见输入和候选排序可用；尚未覆盖所有应用与系统版本。应用仍采用 ad-hoc 签名，未做 Developer ID 签名与公证。
 
@@ -12,14 +12,14 @@ v0.3.0 采用 Rime 中文候选与静态权重，提供原样英文候选和词�
 
 ## Homebrew 安装
 
-提供项目维护的自定义 tap，稳定渠道 `localgloss` 为 v0.3.0；历史预发布渠道 `localgloss@alpha` 保留 alpha.5。
+提供项目维护的自定义 tap，稳定渠道 `localgloss` 为 v0.3.0；测试渠道 `localgloss@alpha` 为 v0.4.0-beta.1。
 
 ```sh
 brew tap songsongsongggg/localgloss https://github.com/songsongsongggg/LocalGloss
 brew install --cask songsongsongggg/localgloss/localgloss
 ```
 
-历史测试版使用 `brew install --cask songsongsongggg/localgloss/localgloss@alpha`。两种渠道不可同时安装。安装后仍需在系统设置添加「本地译词」输入源；已有手动安装版本请先按 [升级说明](INSTALL.zh-CN.md) 备份并退出旧输入法，避免覆盖正在运行的程序。
+测试版使用 `brew install --cask songsongsongggg/localgloss/localgloss@alpha`。两种渠道不可同时安装。安装后仍需在系统设置添加「本地译词」输入源；已有手动安装版本请先按 [升级说明](INSTALL.zh-CN.md) 备份并退出旧输入法，避免覆盖正在运行的程序。
 
 ## 功能
 

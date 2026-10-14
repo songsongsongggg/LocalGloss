@@ -39,3 +39,11 @@ Swift→Rust 保存/解析/中文与译词提交集成通过。AppKit 源码类�
 使用候选包词表回放 181 组排序样例，174 组首选、181 组前三，基线退化列表为空；高亮译词回归通过。该结果不包含新安装包的本机替换验收，也不是全面动态隐私审计。
 
 源码尚未提交，候选清单如实标记 dirty，不作为正式发布附件。远端 CI 未执行，官方打包器的干净提交门禁尚未进入。获得提交、推送与预发布授权后，按精确提交重新构建、打包与校验；稳定版、已有标签及本机输入法保持不变。
+
+## 公开发布（2026-10-15，Asia/Shanghai）
+
+v0.4.0-beta.1 已公开为 Pre-release，稳定渠道和本机保持 v0.3.0。不可变标签指向 `2c5e1b1920e639832bf3541e29a1fe22e54d553c`；[精确提交 CI](https://github.com/songsongsongggg/LocalGloss/actions/runs/38603927678) 与 [GitHub 内部构建](https://github.com/songsongsongggg/LocalGloss/actions/runs/38606197017) 均通过。
+
+本机大附件上传遭遇 HTTP 408，改由 GitHub runner 对相同标签重建并上传草稿，未改写标签。最终 ZIP SHA-256 为 `5d4703869452a5ab3f1087e6aec31a36fb1e6991138a64ec708366ed638e4f56`。五个附件已重新下载并验证 SHA-256；ZIP 解压后 152 文件与清单一致、签名验证通过。源码包版本与提交核对通过；本机同标签源码归档在空 Cargo 缓存下离线 cargo check 通过。
+
+[发布页面](https://github.com/songsongsongggg/LocalGloss/releases/tag/v0.4.0-beta.1)。测试 cask 使用实际公开 ZIP 校验值，不使用本机候选校验值。完整新安装包尚未替换本机输入法，不能把预览用户验收描述为新版安装后的全部验收。
